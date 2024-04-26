@@ -1,0 +1,44 @@
+@font-face {
+    font-family: "OpenSans";
+    src: url('fonts/OpenSans-Regular.ttf');
+}
+
+@font-face {
+    font-family: "OpenSans SemiBold";
+    src: url('fonts/OpenSans-SemiBold.ttf');
+}
+
+@font-face {
+    font-family: "OpenSans Bold";
+    src: url('fonts/OpenSans-Bold.ttf');
+}
+
+.border-pane {
+    -fx-background-color: #02886F;
+}
+
+.grid-pane {
+    -fx-background-color: #9BEDE1;
+    -fx-border-radius: 50px;
+}
+
+.login-title {
+    -fx-font-family: "OpenSans";
+    -fx-font-size: 28px;
+    -fx-font-weight: Bold;
+}
+
+.username-label {
+    -fx-font-family: "OpenSans";
+    -fx-font-size: 16px;
+}
+
+.password-label {
+    -fx-font-family: "OpenSans";
+    -fx-font-size: 16px;
+}
+
+.login-btn {
+    -fx-background-color: #02886F;
+    -fx-text-fill: #ffffff;
+}
