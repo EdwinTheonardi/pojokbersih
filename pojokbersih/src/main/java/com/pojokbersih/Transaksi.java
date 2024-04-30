@@ -5,14 +5,19 @@ import java.util.Map;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 public class Transaksi {
@@ -24,6 +29,7 @@ public class Transaksi {
         VBox center = new VBox();
         center.getChildren().add(header());
         center.getChildren().add(menu());
+        center.getChildren().add(tool());
         center.getChildren().add(labelTabel());
         center.getChildren().add(table());
         rootPane.setCenter(center);
@@ -91,6 +97,26 @@ public class Transaksi {
         menu.getChildren().add(produk);
 
         return menu;
+    }
+
+    public HBox tool() {
+        HBox tool = new HBox(20);
+        tool.getStyleClass().add("tool-box");
+
+            Button filterButton = new Button();
+            filterButton.setText("Filter");
+            filterButton.getStyleClass().add("filter-button");
+
+            TextField searchField = new TextField();
+            searchField.getStyleClass().add("search-field");
+            searchField.setPromptText("Cari");
+            
+            Button addButton = new Button();
+            addButton.setText("Tambah");
+            addButton.getStyleClass().add("add-button");
+        
+            tool.getChildren().addAll(filterButton, searchField, addButton);
+        return tool;
     }
 
     public HBox labelTabel() {
