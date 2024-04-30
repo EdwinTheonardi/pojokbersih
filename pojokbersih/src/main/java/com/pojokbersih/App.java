@@ -27,15 +27,16 @@ import java.io.IOException;
  * JavaFX App
  */
 public class App extends Application {
-
+    private static Stage window;
     private static Scene scene;
     
     @Override
     public void start(Stage stage) throws IOException {
+        window = stage;
         // Load fonts
         Font.loadFont(getClass().getResourceAsStream("fonts/OpenSans-Regular.ttf"), 12);
         Font.loadFont(getClass().getResourceAsStream("fonts/OpenSans-SemiBold.ttf"), 12);
-        Font.loadFont(getClass().getResourceAsStream("fonts/OpenSans-Bold.ttf"), 12);
+        // Font.loadFont(getClass().getResourceAsStream("fonts/OpenSans-Bold.ttf"), 12);
 
         BorderPane border = new BorderPane();
         border.getStyleClass().add("border-pane");
@@ -43,6 +44,7 @@ public class App extends Application {
 
         scene = new Scene(border, 1280, 720);
         scene.getStylesheets().add(App.class.getResource("css/style.css").toExternalForm());
+        stage.setTitle("Pojok Bersih");
         stage.setScene(scene);
         stage.show();
     }
@@ -98,17 +100,13 @@ public class App extends Application {
         grid.add(passwordField, 0, 5);
         grid.add(login, 0, 6);
 
+        login.setOnAction(e -> {
+            Home home = new Home();
+            window.getScene().setRoot(home.getRootPane());
+        });
+
         return grid;
     }
-
-    // public HBox hbox1(){
-    //     HBox tampilan = new HBox();
-    //     Label text1 = new Label("halo");
-
-    //     tampilan.getChildren().add(text1);
-        
-    //     return tampilan;
-    // }
 
 // ---------------------------------------------------------------------------------------------------------------------------
     

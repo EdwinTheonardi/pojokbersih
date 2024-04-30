@@ -4,13 +4,8 @@
 }
 
 @font-face {
-    font-family: "OpenSans SemiBold";
+    font-family: "OpenSansSemiBold";
     src: url('fonts/OpenSans-SemiBold.ttf');
-}
-
-@font-face {
-    font-family: "OpenSans Bold";
-    src: url('fonts/OpenSans-Bold.ttf');
 }
 
 .border-pane {
@@ -20,6 +15,10 @@
 .grid-pane {
     -fx-background-color: #9BEDE1;
     -fx-border-radius: 50px;
+}
+
+.root-pane {
+    -fx-background-color: #9BEDE1;
 }
 
 .login-title {
@@ -41,4 +40,104 @@
 .login-btn {
     -fx-background-color: #02886F;
     -fx-text-fill: #ffffff;
+}
+
+/* Home */
+.header {
+    -fx-background-color: #02886F;
+    -fx-padding: 24px 0px 24px 50px;
+}
+
+.logo {
+    -fx-font-family: "OpenSans";
+    -fx-font-size: 20px;
+    -fx-font-weight: Bold;
+    -fx-text-fill: #FFFFFF;
+}
+
+.menu {
+    -fx-background-color: #9BEDE1;
+    -fx-padding: 30px 0px 30px 0px;
+}
+
+.btn {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+    -fx-padding: 0px 0px 0px 50px;
+    -fx-cursor: hand;
+    -fx-font-family: "OpenSans";
+    -fx-font-size: 16px;
+    -fx-font-weight: Bold;
+    -fx-text-fill: #333333;
+}
+
+.cards {
+    -fx-background-color: #9BEDE1;
+    -fx-padding: 0px 50px 30px 50px;
+}
+
+
+.total-box {
+    -fx-padding: 15px 0px 15px 15px;
+}
+
+.deal-text {
+    -fx-font-family: "OpenSans";
+    -fx-font-size: 16px;
+    -fx-font-weight: Bold;
+    -fx-text-fill: #333333;
+}
+
+.ongoing-text {
+    -fx-font-family: "OpenSans";
+    -fx-font-size: 16px;
+    -fx-font-weight: Bold;
+    -fx-text-fill: #333333;
+}
+
+.done-text {
+    -fx-font-family: "OpenSans";
+    -fx-font-size: 16px;
+    -fx-font-weight: Bold;
+    -fx-text-fill: #333333;
+}
+
+.pendapatan-text {
+    -fx-font-family: "OpenSans";
+    -fx-font-size: 16px;
+    -fx-font-weight: Bold;
+    -fx-text-fill: #333333;
+}
+
+.card-value {
+    -fx-font-family: "OpenSans";
+    -fx-font-size: 32px;
+    -fx-font-weight: Bold;
+    -fx-text-fill: #333333;
+}
+
+.label-tabel {
+    -fx-padding: 0px 0px 0px 50px;
+    -fx-font-family: "OpenSans";
+    -fx-font-size: 16px;
+    -fx-font-weight: Bold;
+    -fx-text-fill: #333333;
+}
+
+.tabel-jadwal {
+    -fx-background-color: transparent;
+    -fx-border-width: 0px;
+    -fx-font-family: "OpenSans";
+    -fx-font-size: 16px;
+    -fx-text-fill: #333333;
+    -fx-padding: 10px 50px 0px 50px;
+}
+
+.table-column {
+    -fx-alignment: center;
+    -fx-padding: 5px 20px 5px 20px;
+}
+
+.wrap-text {
+    -fx-wrap-text: true;
 }
