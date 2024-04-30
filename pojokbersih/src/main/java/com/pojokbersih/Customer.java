@@ -25,8 +25,8 @@ public class Customer {
         VBox center = new VBox();
         center.getChildren().add(header());
         center.getChildren().add(menu());
-        center.getChildren().add(tool());
         center.getChildren().add(labelTabel());
+        center.getChildren().add(tool());
         center.getChildren().add(table());
         rootPane.setCenter(center);
     }
@@ -120,7 +120,7 @@ public class Customer {
         tabel.getStyleClass().add("tabel");
 
         Label labelTabel = new Label("Tabel Customer");
-        labelTabel.getStyleClass().add("label-tabel");
+        labelTabel.getStyleClass().add("label-tabel-customer");
         tabel.getChildren().add(labelTabel);
 
         return tabel;

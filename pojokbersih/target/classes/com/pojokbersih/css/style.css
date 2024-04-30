@@ -123,6 +123,38 @@
     -fx-text-fill: #333333;
 }
 
+.label-tabel-transaksi {
+    -fx-padding: 0px 0px 25px 50px;
+    -fx-font-family: "OpenSans";
+    -fx-font-size: 16px;
+    -fx-font-weight: Bold;
+    -fx-text-fill: #333333;
+}
+
+.label-tabel-customer {
+    -fx-padding: 0px 0px 25px 50px;
+    -fx-font-family: "OpenSans";
+    -fx-font-size: 16px;
+    -fx-font-weight: Bold;
+    -fx-text-fill: #333333;
+}
+
+.label-tabel-staff {
+    -fx-padding: 0px 0px 25px 50px;
+    -fx-font-family: "OpenSans";
+    -fx-font-size: 16px;
+    -fx-font-weight: Bold;
+    -fx-text-fill: #333333;
+}
+
+.label-tabel-produk {
+    -fx-padding: 0px 0px 25px 50px;
+    -fx-font-family: "OpenSans";
+    -fx-font-size: 16px;
+    -fx-font-weight: Bold;
+    -fx-text-fill: #333333;
+}
+
 .tabel-jadwal {
     -fx-background-color: transparent;
     -fx-border-width: 0px;

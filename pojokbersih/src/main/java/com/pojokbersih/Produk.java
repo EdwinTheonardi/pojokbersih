@@ -25,8 +25,8 @@ public class Produk {
         VBox center = new VBox();
         center.getChildren().add(header());
         center.getChildren().add(menu());
-        center.getChildren().add(tool());
         center.getChildren().add(labelTabel());
+        center.getChildren().add(tool());
         center.getChildren().add(table());
         rootPane.setCenter(center);
     }
@@ -120,7 +120,7 @@ public class Produk {
         tabel.getStyleClass().add("tabel");
 
         Label labelTabel = new Label("Tabel Produk");
-        labelTabel.getStyleClass().add("label-tabel");
+        labelTabel.getStyleClass().add("label-tabel-produk");
         tabel.getChildren().add(labelTabel);
 
         return tabel;

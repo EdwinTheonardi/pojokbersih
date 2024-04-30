@@ -29,8 +29,8 @@ public class Transaksi {
         VBox center = new VBox();
         center.getChildren().add(header());
         center.getChildren().add(menu());
-        center.getChildren().add(tool());
         center.getChildren().add(labelTabel());
+        center.getChildren().add(tool());
         center.getChildren().add(table());
         rootPane.setCenter(center);
     }
@@ -124,7 +124,7 @@ public class Transaksi {
         tabel.getStyleClass().add("tabel");
 
         Label labelTabel = new Label("Tabel Transaksi");
-        labelTabel.getStyleClass().add("label-tabel");
+        labelTabel.getStyleClass().add("label-tabel-transaksi");
         tabel.getChildren().add(labelTabel);
 
         return tabel;

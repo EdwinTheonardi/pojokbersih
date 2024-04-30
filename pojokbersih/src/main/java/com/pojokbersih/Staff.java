@@ -25,8 +25,8 @@ public class Staff {
         VBox center = new VBox();
         center.getChildren().add(header());
         center.getChildren().add(menu());
-        center.getChildren().add(tool());
         center.getChildren().add(labelTabel());
+        center.getChildren().add(tool());
         center.getChildren().add(table());
         rootPane.setCenter(center);
     }
@@ -120,7 +120,7 @@ public class Staff {
         tabel.getStyleClass().add("tabel");
 
         Label labelTabel = new Label("Tabel Staff");
-        labelTabel.getStyleClass().add("label-tabel");
+        labelTabel.getStyleClass().add("label-tabel-staff");
         tabel.getChildren().add(labelTabel);
 
         return tabel;
