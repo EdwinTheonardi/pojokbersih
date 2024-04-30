@@ -76,7 +76,6 @@
     -fx-padding: 0px 50px 30px 50px;
 }
 
-
 .total-box {
     -fx-padding: 15px 0px 15px 15px;
 }
@@ -140,4 +139,36 @@
 
 .wrap-text {
     -fx-wrap-text: true;
+}
+
+/* Transaksi */
+.tool-box {
+    -fx-background-color: transparent;
+    -fx-padding: 0px 0px 25px 50px;
+}
+
+.filter-button {
+    -fx-padding: 5px 10px 5px 10px;
+    -fx-cursor: hand;
+    -fx-background-color: #02886F;
+    -fx-font-family: "OpenSans";
+    -fx-font-size: 16px;
+    -fx-font-weight: Bold;
+    -fx-text-fill: #FFFFFF;
+}
+
+.search-field {
+    -fx-padding: 5px 1000px 5px 10px;
+    -fx-background-color: #F3F3F3;
+    -fx-font-size: 16px;
+}
+
+.add-button {
+    -fx-padding: 5px 10px 5px 10px;
+    -fx-cursor: hand;
+    -fx-background-color: #02886F;
+    -fx-font-family: "OpenSans";
+    -fx-font-size: 16px;
+    -fx-font-weight: Bold;
+    -fx-text-fill: #FFFFFF;
 }
