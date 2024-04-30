@@ -56,17 +56,42 @@ public class Home {
         Button home = new Button("Home");
         home.getStyleClass().add("btn");
 
+        home.setOnAction(e -> {
+            Home homee = new Home();
+            rootPane.getScene().setRoot(homee.getRootPane());
+        });
+
         Button transaksi = new Button("Transaksi");
         transaksi.getStyleClass().add("btn");
+
+        transaksi.setOnAction(e -> {
+            Transaksi transaksii = new Transaksi();
+            rootPane.getScene().setRoot(transaksii.getRootPane());
+        });
 
         Button customer = new Button("Customer");
         customer.getStyleClass().add("btn");
 
+        customer.setOnAction(e -> {
+            Customer customerr = new Customer();
+            rootPane.getScene().setRoot(customerr.getRootPane());
+        });
+
         Button staff = new Button("Staff");
         staff.getStyleClass().add("btn");
 
+        staff.setOnAction(e -> {
+            Staff stafff = new Staff();
+            rootPane.getScene().setRoot(stafff.getRootPane());
+        });
+
         Button produk = new Button("Produk");
         produk.getStyleClass().add("btn");
+
+        produk.setOnAction(e -> {
+            Produk produkk = new Produk();
+            rootPane.getScene().setRoot(produkk.getRootPane());
+        });
 
         menu.getChildren().add(home);
         menu.getChildren().add(transaksi);
