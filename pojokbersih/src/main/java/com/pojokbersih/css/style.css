@@ -190,7 +190,7 @@
 }
 
 .search-field {
-    -fx-padding: 5px 1000px 5px 10px;
+    -fx-padding: 5px 1060px 5px 10px;
     -fx-background-color: #F3F3F3;
     -fx-font-size: 16px;
 }
@@ -203,4 +203,39 @@
     -fx-font-size: 16px;
     -fx-font-weight: Bold;
     -fx-text-fill: #FFFFFF;
+}
+
+.halaman-baru {
+    -fx-background-color: #9BEDE1;
+}
+
+.form-title {
+    -fx-font-family: "OpenSans";
+    -fx-font-size: 24px;
+    -fx-font-weight: Bold;
+    -fx-text-fill: #333333;
+    -fx-padding: 30px 0px 50px 0px;
+}
+
+.form-grid {
+    -fx-padding: 0px 0px 10px 50px;
+}
+
+.form-label {
+    -fx-font-family: "OpenSans";
+    -fx-font-size: 16px;
+    -fx-text-fill: #333333;
+}
+
+.save-button {
+    -fx-padding: 5px 150px 5px 150px;
+    -fx-cursor: hand;
+    -fx-background-color: #02886F;
+    -fx-font-family: "OpenSans";
+    -fx-font-size: 16px;
+    -fx-text-fill: #FFFFFF;
+}
+
+.button-wrap {
+    -fx-padding: 50px 0px 0px 0px;
 }
