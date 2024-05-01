@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -12,9 +14,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class Produk {
         private final BorderPane rootPane;
@@ -110,6 +116,64 @@ public class Produk {
             Button addButton = new Button();
             addButton.setText("Tambah");
             addButton.getStyleClass().add("add-button");
+
+            addButton.setOnAction(event -> {
+                Stage halamanTambah = new Stage();
+                halamanTambah.initModality(Modality.APPLICATION_MODAL);
+                halamanTambah.setTitle("Tambah Produk");
+                halamanTambah.setWidth(1280);
+                halamanTambah.setHeight(720);
+                
+                StackPane halamanBaru = new StackPane();
+                halamanBaru.getStylesheets().add(App.class.getResource("css/style.css").toExternalForm());
+                halamanBaru.getStyleClass().add("halaman-baru");
+
+                VBox formTambah = new VBox();
+                Label formTitle = new Label("Tambah Produk");
+                formTitle.getStyleClass().add("form-title");
+                formTambah.getChildren().add(formTitle);
+
+                StackPane formTitleWrapper = new StackPane();
+                formTitleWrapper.getChildren().add(formTitle);
+                formTitleWrapper.setPrefWidth(200);
+                StackPane.setAlignment(formTitle, Pos.CENTER);
+                formTambah.getChildren().add(formTitleWrapper);
+
+                // row 1
+                GridPane row1 = new GridPane();
+                row1.getStyleClass().add("form-grid");
+                row1.setHgap(10);
+                row1.setVgap(5);
+                Label namaProdukLabel = new Label("Nama Produk:");
+                namaProdukLabel.getStyleClass().add("form-label");
+                namaProdukLabel.setPrefSize(200, 20);
+                TextField namaProdukField = new TextField();
+                namaProdukField.setPrefSize(300, 20);
+                GridPane.setConstraints(namaProdukLabel, 0, 0);
+                GridPane.setConstraints(namaProdukField, 1, 0);
+                row1.getChildren().addAll(namaProdukLabel, namaProdukField);
+                formTambah.getChildren().add(row1);
+
+                Button saveButton = new Button();
+                saveButton.setText("Simpan");
+                saveButton.getStyleClass().add("save-button");
+                saveButton.setOnAction(e -> {
+                    halamanTambah.close();
+                });
+
+                HBox buttonWrapper = new HBox();
+                buttonWrapper.getStyleClass().add("button-wrap");
+                buttonWrapper.setAlignment(Pos.CENTER);
+                buttonWrapper.getChildren().add(saveButton);
+            
+                formTambah.getChildren().add(buttonWrapper);
+
+                halamanBaru.getChildren().add(formTambah);
+
+                Scene scene = new Scene(halamanBaru);
+                halamanTambah.setScene(scene);
+                halamanTambah.show();
+            });
         
             tool.getChildren().addAll(filterButton, searchField, addButton);
         return tool;

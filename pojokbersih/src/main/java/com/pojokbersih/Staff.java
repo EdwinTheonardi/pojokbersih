@@ -5,16 +5,25 @@ import java.util.Map;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class Staff {
         private final BorderPane rootPane;
@@ -110,6 +119,155 @@ public class Staff {
             Button addButton = new Button();
             addButton.setText("Tambah");
             addButton.getStyleClass().add("add-button");
+
+            addButton.setOnAction(event -> {
+                Stage halamanTambah = new Stage();
+                halamanTambah.initModality(Modality.APPLICATION_MODAL);
+                halamanTambah.setTitle("Tambah Staff");
+                halamanTambah.setWidth(1280);
+                halamanTambah.setHeight(720);
+
+                StackPane halamanBaru = new StackPane();
+                halamanBaru.getStylesheets().add(App.class.getResource("css/style.css").toExternalForm());
+                halamanBaru.getStyleClass().add("halaman-baru");
+
+                VBox formTambah = new VBox();
+                Label formTitle = new Label("Tambah Staff");
+                formTitle.getStyleClass().add("form-title");
+                formTambah.getChildren().add(formTitle);
+
+                StackPane formTitleWrapper = new StackPane();
+                formTitleWrapper.getChildren().add(formTitle);
+                formTitleWrapper.setPrefWidth(200);
+                StackPane.setAlignment(formTitle, Pos.CENTER);
+                formTambah.getChildren().add(formTitleWrapper);
+
+                // row 1
+                GridPane row1 = new GridPane();
+                row1.getStyleClass().add("form-grid");
+                row1.setHgap(10);
+                row1.setVgap(5);
+                Label namaStaffLabel = new Label("Nama Staff:");
+                namaStaffLabel.getStyleClass().add("form-label");
+                namaStaffLabel.setPrefSize(200, 20);
+                TextField namaStaffField = new TextField();
+                namaStaffField.setPrefSize(200, 20);
+                GridPane.setConstraints(namaStaffLabel, 0, 0);
+                GridPane.setConstraints(namaStaffField, 1, 0);
+                row1.getChildren().addAll(namaStaffLabel, namaStaffField);
+                formTambah.getChildren().add(row1);
+
+                // row 2
+                GridPane row2 = new GridPane();
+                row2.getStyleClass().add("form-grid");
+                row2.setHgap(10);
+                row2.setVgap(5);
+                Label jenisKelamin = new Label("Jenis Kelamin:");
+                jenisKelamin.getStyleClass().add("form-label");
+                jenisKelamin.setPrefSize(200, 20);
+                ComboBox<String> jenisKelaminBox = new ComboBox<>();
+                jenisKelaminBox.getItems().addAll("Laki-laki", "Perempuan");
+                jenisKelaminBox.setPrefSize(200, 20);
+                GridPane.setConstraints(jenisKelamin, 0, 0);
+                GridPane.setConstraints(jenisKelaminBox, 1, 0);
+                row2.getChildren().addAll(jenisKelamin, jenisKelaminBox);
+                formTambah.getChildren().add(row2);
+
+                // row 3
+                GridPane row3 = new GridPane();
+                row3.getStyleClass().add("form-grid");
+                row3.setHgap(10);
+                row3.setVgap(5);
+                Label tempatLahirLabel = new Label("Tempat Lahir:");
+                tempatLahirLabel.getStyleClass().add("form-label");
+                tempatLahirLabel.setPrefSize(200, 20);
+                TextField tempatLahirField = new TextField();
+                tempatLahirField.setPrefSize(200, 20);
+                GridPane.setConstraints(tempatLahirLabel, 0, 0);
+                GridPane.setConstraints(tempatLahirField, 1, 0);
+                row3.getChildren().addAll(tempatLahirLabel, tempatLahirField);
+                formTambah.getChildren().add(row3);
+
+                // row 4
+                GridPane row4 = new GridPane();
+                row4.getStyleClass().add("form-grid");
+                row4.setHgap(10);
+                row4.setVgap(5);
+                Label tanggalLahirLabel = new Label("Tanggal Lahir:");
+                tanggalLahirLabel.getStyleClass().add("form-label");
+                tanggalLahirLabel.setPrefSize(200, 20);
+                DatePicker tanggalLahirField = new DatePicker();
+                tanggalLahirField.setPrefSize(200, 20);
+                GridPane.setConstraints(tanggalLahirLabel, 0, 0);
+                GridPane.setConstraints(tanggalLahirField, 1, 0);
+                row4.getChildren().addAll(tanggalLahirLabel, tanggalLahirField);
+                formTambah.getChildren().add(row4);
+
+                // row 5
+                GridPane row5 = new GridPane();
+                row5.getStyleClass().add("form-grid");
+                row5.setHgap(10);
+                row5.setVgap(5);
+                Label alamatLabel = new Label("Alamat:");
+                alamatLabel.getStyleClass().add("form-label");
+                alamatLabel.setPrefSize(200, 20);
+                TextArea alamatField = new TextArea();
+                alamatField.setPrefSize(200, 80);
+                GridPane.setConstraints(alamatLabel, 0, 0);
+                GridPane.setConstraints(alamatField, 1, 0);
+                row5.getChildren().addAll(alamatLabel, alamatField);
+                formTambah.getChildren().add(row5);
+
+                // row 6
+                GridPane row6 = new GridPane();
+                row6.getStyleClass().add("form-grid");
+                row6.setHgap(10);
+                row6.setVgap(5);
+                Label nomorTelfonLabel = new Label("Nomor Telepon:");
+                nomorTelfonLabel.getStyleClass().add("form-label");
+                nomorTelfonLabel.setPrefSize(200, 20);
+                TextField nomorTelfonField = new TextField();
+                nomorTelfonField.setPrefSize(200, 20);
+                GridPane.setConstraints(nomorTelfonLabel, 0, 0);
+                GridPane.setConstraints(nomorTelfonField, 1, 0);
+                row6.getChildren().addAll(nomorTelfonLabel, nomorTelfonField);
+                formTambah.getChildren().add(row6);
+
+                // row 7
+                GridPane row7 = new GridPane();
+                row7.getStyleClass().add("form-grid");
+                row7.setHgap(10);
+                row7.setVgap(5);
+                Label emailLabel = new Label("Email:");
+                emailLabel.getStyleClass().add("form-label");
+                emailLabel.setPrefSize(200, 20);
+                TextField emailField = new TextField();
+                emailField.setPrefSize(200, 20);
+                GridPane.setConstraints(emailLabel, 0, 0);
+                GridPane.setConstraints(emailField, 1, 0);
+                row7.getChildren().addAll(emailLabel, emailField);
+                formTambah.getChildren().add(row7);
+
+                Button saveButton = new Button();
+                saveButton.setText("Simpan");
+                saveButton.getStyleClass().add("save-button");
+                saveButton.setOnAction(e -> {
+                    halamanTambah.close();
+                });
+
+                HBox buttonWrapper = new HBox();
+                buttonWrapper.getStyleClass().add("button-wrap");
+                buttonWrapper.setAlignment(Pos.CENTER);
+                buttonWrapper.getChildren().add(saveButton);
+            
+                formTambah.getChildren().add(buttonWrapper);
+
+                halamanBaru.getChildren().add(formTambah);
+
+                Scene scene = new Scene(halamanBaru);
+                halamanTambah.setScene(scene);
+                halamanTambah.show();
+            });
         
             tool.getChildren().addAll(filterButton, searchField, addButton);
         return tool;
@@ -143,18 +301,22 @@ public class Staff {
         jenisKelamin.setCellValueFactory(new MapValueFactory<>("Jenis Kelamin"));
         jenisKelamin.setPrefWidth(150);
 
-        TableColumn<Map, String> tempatTanggalLahir = new TableColumn<>("TTL");
-        tempatTanggalLahir.setCellValueFactory(new MapValueFactory<>("TTL"));
-        tempatTanggalLahir.setPrefWidth(230);
+        TableColumn<Map, String> tempatLahir = new TableColumn<>("Tempat Lahir");
+        tempatLahir.setCellValueFactory(new MapValueFactory<>("Tempat Lahir"));
+        tempatLahir.setPrefWidth(140);
+
+        TableColumn<Map, String> tanggalLahir = new TableColumn<>("Tanggal Lahir");
+        tanggalLahir.setCellValueFactory(new MapValueFactory<>("Tanggal Lahir"));
+        tanggalLahir.setPrefWidth(150);
 
         TableColumn<Map, String> alamat = new TableColumn<>("Alamat");
         alamat.setCellValueFactory(new MapValueFactory<>("Alamat"));
-        alamat.setPrefWidth(334);
+        alamat.setPrefWidth(314);
         alamat.getStyleClass().add("wrap-text");
 
         TableColumn<Map, String> noTelepon = new TableColumn<>("Nomor Telepon");
         noTelepon.setCellValueFactory(new MapValueFactory<>("Nomor Telepon"));
-        noTelepon.setPrefWidth(200);
+        noTelepon.setPrefWidth(160);
 
         TableColumn<Map, String> email = new TableColumn<>("Email");
         email.setCellValueFactory(new MapValueFactory<>("Email"));
@@ -163,7 +325,8 @@ public class Staff {
         tabelStaff.getColumns().add(kodeStaff);
         tabelStaff.getColumns().add(namaStaff);
         tabelStaff.getColumns().add(jenisKelamin);
-        tabelStaff.getColumns().add(tempatTanggalLahir);
+        tabelStaff.getColumns().add(tempatLahir);
+        tabelStaff.getColumns().add(tanggalLahir);
         tabelStaff.getColumns().add(alamat);
         tabelStaff.getColumns().add(noTelepon);
         tabelStaff.getColumns().add(email);
@@ -175,7 +338,8 @@ public class Staff {
         item1.put("Kode Staff", "ST0000000001");
         item1.put("Nama Staff", "Vinsen");
         item1.put("Jenis Kelamin", "Laki-laki");
-        item1.put("TTL", "Pontianak, 02/06/1999");
+        item1.put("Tempat Lahir", "Pontianak");
+        item1.put("Tanggal Lahir", "02/06/1999");
         item1.put("Alamat", "Jl. Trunojoyo");
         item1.put("Nomor Telepon", "081234567890");
         item1.put("Email", "pak.vinsen@gmail.com");
