@@ -1,19 +1,19 @@
-package com.pojokbersih;
+package com.pojokbersih.Table;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import com.pojokbersih.App;
+import com.pojokbersih.Home;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -25,10 +25,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class Customer {
-    private final BorderPane rootPane;
+public class Produk {
+        private final BorderPane rootPane;
 
-    public Customer() {
+    public Produk() {
         rootPane = new BorderPane();
         rootPane.getStyleClass().add("root-pane");
         VBox center = new VBox();
@@ -75,7 +75,7 @@ public class Customer {
         customer.getStyleClass().add("btn");
 
         customer.setOnAction(e -> {
-            Customer customerr = new Customer();
+            TableCustomer customerr = new TableCustomer();
             rootPane.getScene().setRoot(customerr.getRootPane());
         });
 
@@ -123,7 +123,7 @@ public class Customer {
             addButton.setOnAction(event -> {
                 Stage halamanTambah = new Stage();
                 halamanTambah.initModality(Modality.APPLICATION_MODAL);
-                halamanTambah.setTitle("Tambah Customer");
+                halamanTambah.setTitle("Tambah Produk");
                 halamanTambah.setWidth(1280);
                 halamanTambah.setHeight(720);
                 
@@ -132,7 +132,7 @@ public class Customer {
                 halamanBaru.getStyleClass().add("halaman-baru");
 
                 VBox formTambah = new VBox();
-                Label formTitle = new Label("Tambah Customer");
+                Label formTitle = new Label("Tambah Produk");
                 formTitle.getStyleClass().add("form-title");
                 formTambah.getChildren().add(formTitle);
 
@@ -147,45 +147,15 @@ public class Customer {
                 row1.getStyleClass().add("form-grid");
                 row1.setHgap(10);
                 row1.setVgap(5);
-                Label namaCustomerLabel = new Label("Nama Customer:");
-                namaCustomerLabel.getStyleClass().add("form-label");
-                namaCustomerLabel.setPrefSize(200, 20);
-                TextField namaCustomerField = new TextField();
-                namaCustomerField.setPrefSize(200, 20);
-                GridPane.setConstraints(namaCustomerLabel, 0, 0);
-                GridPane.setConstraints(namaCustomerField, 1, 0);
-                row1.getChildren().addAll(namaCustomerLabel, namaCustomerField);
+                Label namaProdukLabel = new Label("Nama Produk:");
+                namaProdukLabel.getStyleClass().add("form-label");
+                namaProdukLabel.setPrefSize(200, 20);
+                TextField namaProdukField = new TextField();
+                namaProdukField.setPrefSize(300, 20);
+                GridPane.setConstraints(namaProdukLabel, 0, 0);
+                GridPane.setConstraints(namaProdukField, 1, 0);
+                row1.getChildren().addAll(namaProdukLabel, namaProdukField);
                 formTambah.getChildren().add(row1);
-
-                // row 2
-                GridPane row2 = new GridPane();
-                row2.getStyleClass().add("form-grid");
-                row2.setHgap(10);
-                row2.setVgap(5);
-                Label nomorTelfonLabel = new Label("Nomor Telepon:");
-                nomorTelfonLabel.getStyleClass().add("form-label");
-                nomorTelfonLabel.setPrefSize(200, 20);
-                TextField nomorTelfonField = new TextField();
-                nomorTelfonField.setPrefSize(200, 20);
-                GridPane.setConstraints(nomorTelfonLabel, 0, 0);
-                GridPane.setConstraints(nomorTelfonField, 1, 0);
-                row2.getChildren().addAll(nomorTelfonLabel, nomorTelfonField);
-                formTambah.getChildren().add(row2);
-
-                // row 3
-                GridPane row3 = new GridPane();
-                row3.getStyleClass().add("form-grid");
-                row3.setHgap(10);
-                row3.setVgap(5);
-                Label alamatCustomerLabel = new Label("Alamat Customer:");
-                alamatCustomerLabel.getStyleClass().add("form-label");
-                alamatCustomerLabel.setPrefSize(200, 20);
-                TextArea alamatCustomerField = new TextArea();
-                alamatCustomerField.setPrefSize(200, 80);
-                GridPane.setConstraints(alamatCustomerLabel, 0, 0);
-                GridPane.setConstraints(alamatCustomerField, 1, 0);
-                row3.getChildren().addAll(alamatCustomerLabel, alamatCustomerField);
-                formTambah.getChildren().add(row3);
 
                 Button saveButton = new Button();
                 saveButton.setText("Simpan");
@@ -216,8 +186,8 @@ public class Customer {
         HBox tabel = new HBox();
         tabel.getStyleClass().add("tabel");
 
-        Label labelTabel = new Label("Tabel Customer");
-        labelTabel.getStyleClass().add("label-tabel-customer");
+        Label labelTabel = new Label("Tabel Produk");
+        labelTabel.getStyleClass().add("label-tabel-produk");
         tabel.getChildren().add(labelTabel);
 
         return tabel;
@@ -225,53 +195,50 @@ public class Customer {
 
     @SuppressWarnings("unchecked")
     public TableView table() {
-        TableView tabelCustomer = new TableView();
-        tabelCustomer.getStyleClass().add("tabel-jadwal");
+        TableView tabelProduk = new TableView();
+        tabelProduk.getStyleClass().add("tabel-jadwal");
 
-        TableColumn<Map, String> kodeCustomer = new TableColumn<>("Kode Customer");
-        kodeCustomer.setCellValueFactory(new MapValueFactory<>("Kode Customer"));
-        kodeCustomer.setPrefWidth(300);
+        TableColumn<Map, String> kodeProduk = new TableColumn<>("Kode Produk");
+        kodeProduk.setCellValueFactory(new MapValueFactory<>("Kode Produk"));
+        kodeProduk.setPrefWidth(717);
 
-        TableColumn<Map, String> namaCustomer = new TableColumn<>("Nama Customer");
-        namaCustomer.setCellValueFactory(new MapValueFactory<>("Nama Customer"));
-        namaCustomer.setPrefWidth(300);
+        TableColumn<Map, String> namaProduk = new TableColumn<>("Nama Produk");
+        namaProduk.setCellValueFactory(new MapValueFactory<>("Nama Produk"));
+        namaProduk.setPrefWidth(717);
 
-        TableColumn<Map, String> noTelepon = new TableColumn<>("Nomor Telepon");
-        noTelepon.setCellValueFactory(new MapValueFactory<>("Nomor Telepon"));
-        noTelepon.setPrefWidth(200);
-
-        TableColumn<Map, String> alamat = new TableColumn<>("Alamat");
-        alamat.setCellValueFactory(new MapValueFactory<>("Alamat"));
-        alamat.setPrefWidth(634);
-        alamat.getStyleClass().add("wrap-text");
-
-        tabelCustomer.getColumns().add(kodeCustomer);
-        tabelCustomer.getColumns().add(namaCustomer);
-        tabelCustomer.getColumns().add(noTelepon);
-        tabelCustomer.getColumns().add(alamat);
+        tabelProduk.getColumns().add(kodeProduk);
+        tabelProduk.getColumns().add(namaProduk);
 
         ObservableList<Map<String, Object>> items = 
         FXCollections.<Map<String, Object>>observableArrayList();
 
         Map<String, Object> item1 = new HashMap<>();
-        item1.put("Kode Customer", "CS0000000001");
-        item1.put("Nama Customer", "Daniel");
-        item1.put("Nomor Telepon", "0877239138712");
-        item1.put("Alamat", "Jl. Satu");
+        item1.put("Kode Produk", "PD0000000001");
+        item1.put("Nama Produk", "Regular Cleaning");
 
         items.add(item1);
 
         Map<String, Object> item2 = new HashMap<>();
-        item2.put("Kode Customer", "CS0000000002");
-        item2.put("Nama Customer", "Edwin");
-        item2.put("Nomor Telepon", "081234567890");
-        item2.put("Alamat", "Jl. Dua");
+        item2.put("Kode Produk", "PD0000000002");
+        item2.put("Nama Produk", "Deep Cleaning");
 
         items.add(item2);
 
-        tabelCustomer.getItems().addAll(items);
+        Map<String, Object> item3 = new HashMap<>();
+        item3.put("Kode Produk", "PD0000000003");
+        item3.put("Nama Produk", "Inspection");
 
-        return tabelCustomer;
+        items.add(item3);
+
+        Map<String, Object> item4 = new HashMap<>();
+        item4.put("Kode Produk", "PD0000000004");
+        item4.put("Nama Produk", "Gardening");
+
+        items.add(item4);
+
+        tabelProduk.getItems().addAll(items);
+
+        return tabelProduk;
     }
 
     public Pane getRootPane() {

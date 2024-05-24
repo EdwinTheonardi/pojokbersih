@@ -11,6 +11,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -46,6 +48,7 @@ public class App extends Application {
         scene.getStylesheets().add(App.class.getResource("css/style.css").toExternalForm());
         stage.setTitle("Pojok Bersih");
         stage.setScene(scene);
+        stage.setMaximized(true);
         stage.show();
     }
 
@@ -101,8 +104,18 @@ public class App extends Application {
         grid.add(login, 0, 6);
 
         login.setOnAction(e -> {
-            Home home = new Home();
-            window.getScene().setRoot(home.getRootPane());
+            Login auth = new Login(usernameField.getText(), passwordField.getText());
+
+            if (auth.authenticate()) {
+                Home home = new Home();
+                window.getScene().setRoot(home.getRootPane());
+            }
+            else {
+                Alert a = new Alert(AlertType.ERROR);
+                a.setContentText("Maaf, Username atau password salah.");
+                a.show();
+            }
+            
         });
 
         return grid;

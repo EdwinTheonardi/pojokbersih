@@ -1,7 +1,10 @@
-package com.pojokbersih;
+package com.pojokbersih.Table;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import com.pojokbersih.App;
+import com.pojokbersih.Home;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -79,7 +82,7 @@ public class Transaksi {
         customer.getStyleClass().add("btn");
 
         customer.setOnAction(e -> {
-            Customer customerr = new Customer();
+            TableCustomer customerr = new TableCustomer();
             rootPane.getScene().setRoot(customerr.getRootPane());
         });
 

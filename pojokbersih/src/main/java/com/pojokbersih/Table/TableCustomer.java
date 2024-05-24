@@ -1,31 +1,42 @@
-package com.pojokbersih;
+package com.pojokbersih.Table;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import com.pojokbersih.App;
+import com.pojokbersih.DB;
+import com.pojokbersih.Home;
+import com.pojokbersih.Model.Customer;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class Produk {
-        private final BorderPane rootPane;
+public class TableCustomer {
+    private final BorderPane rootPane;
 
-    public Produk() {
+    public TableCustomer() {
         rootPane = new BorderPane();
         rootPane.getStyleClass().add("root-pane");
         VBox center = new VBox();
@@ -33,7 +44,7 @@ public class Produk {
         center.getChildren().add(menu());
         center.getChildren().add(labelTabel());
         center.getChildren().add(tool());
-        center.getChildren().add(table());
+        center.getChildren().add(getTable());
         rootPane.setCenter(center);
     }
 
@@ -72,7 +83,7 @@ public class Produk {
         customer.getStyleClass().add("btn");
 
         customer.setOnAction(e -> {
-            Customer customerr = new Customer();
+            TableCustomer customerr = new TableCustomer();
             rootPane.getScene().setRoot(customerr.getRootPane());
         });
 
@@ -120,7 +131,7 @@ public class Produk {
             addButton.setOnAction(event -> {
                 Stage halamanTambah = new Stage();
                 halamanTambah.initModality(Modality.APPLICATION_MODAL);
-                halamanTambah.setTitle("Tambah Produk");
+                halamanTambah.setTitle("Tambah Customer");
                 halamanTambah.setWidth(1280);
                 halamanTambah.setHeight(720);
                 
@@ -129,7 +140,7 @@ public class Produk {
                 halamanBaru.getStyleClass().add("halaman-baru");
 
                 VBox formTambah = new VBox();
-                Label formTitle = new Label("Tambah Produk");
+                Label formTitle = new Label("Tambah Customer");
                 formTitle.getStyleClass().add("form-title");
                 formTambah.getChildren().add(formTitle);
 
@@ -144,15 +155,45 @@ public class Produk {
                 row1.getStyleClass().add("form-grid");
                 row1.setHgap(10);
                 row1.setVgap(5);
-                Label namaProdukLabel = new Label("Nama Produk:");
-                namaProdukLabel.getStyleClass().add("form-label");
-                namaProdukLabel.setPrefSize(200, 20);
-                TextField namaProdukField = new TextField();
-                namaProdukField.setPrefSize(300, 20);
-                GridPane.setConstraints(namaProdukLabel, 0, 0);
-                GridPane.setConstraints(namaProdukField, 1, 0);
-                row1.getChildren().addAll(namaProdukLabel, namaProdukField);
+                Label namaCustomerLabel = new Label("Nama Customer:");
+                namaCustomerLabel.getStyleClass().add("form-label");
+                namaCustomerLabel.setPrefSize(200, 20);
+                TextField namaCustomerField = new TextField();
+                namaCustomerField.setPrefSize(200, 20);
+                GridPane.setConstraints(namaCustomerLabel, 0, 0);
+                GridPane.setConstraints(namaCustomerField, 1, 0);
+                row1.getChildren().addAll(namaCustomerLabel, namaCustomerField);
                 formTambah.getChildren().add(row1);
+
+                // row 2
+                GridPane row2 = new GridPane();
+                row2.getStyleClass().add("form-grid");
+                row2.setHgap(10);
+                row2.setVgap(5);
+                Label nomorTelfonLabel = new Label("Nomor Telepon:");
+                nomorTelfonLabel.getStyleClass().add("form-label");
+                nomorTelfonLabel.setPrefSize(200, 20);
+                TextField nomorTelfonField = new TextField();
+                nomorTelfonField.setPrefSize(200, 20);
+                GridPane.setConstraints(nomorTelfonLabel, 0, 0);
+                GridPane.setConstraints(nomorTelfonField, 1, 0);
+                row2.getChildren().addAll(nomorTelfonLabel, nomorTelfonField);
+                formTambah.getChildren().add(row2);
+
+                // row 3
+                GridPane row3 = new GridPane();
+                row3.getStyleClass().add("form-grid");
+                row3.setHgap(10);
+                row3.setVgap(5);
+                Label alamatCustomerLabel = new Label("Alamat Customer:");
+                alamatCustomerLabel.getStyleClass().add("form-label");
+                alamatCustomerLabel.setPrefSize(200, 20);
+                TextArea alamatCustomerField = new TextArea();
+                alamatCustomerField.setPrefSize(200, 80);
+                GridPane.setConstraints(alamatCustomerLabel, 0, 0);
+                GridPane.setConstraints(alamatCustomerField, 1, 0);
+                row3.getChildren().addAll(alamatCustomerLabel, alamatCustomerField);
+                formTambah.getChildren().add(row3);
 
                 Button saveButton = new Button();
                 saveButton.setText("Simpan");
@@ -183,59 +224,75 @@ public class Produk {
         HBox tabel = new HBox();
         tabel.getStyleClass().add("tabel");
 
-        Label labelTabel = new Label("Tabel Produk");
-        labelTabel.getStyleClass().add("label-tabel-produk");
+        Label labelTabel = new Label("Tabel Customer");
+        labelTabel.getStyleClass().add("label-tabel-customer");
         tabel.getChildren().add(labelTabel);
 
         return tabel;
     }
 
+    private List<Customer> listCust;
+    private TableView<Customer> tb = new TableView<Customer>();
+
     @SuppressWarnings("unchecked")
-    public TableView table() {
-        TableView tabelProduk = new TableView();
-        tabelProduk.getStyleClass().add("tabel-jadwal");
+    public TableView<Customer> createTable() {
+        TableColumn<Customer, String> col_id = new TableColumn<>("Kode Customer");
+        TableColumn<Customer, String> col_nama = new TableColumn<>("Nama Customer");
+        TableColumn<Customer, String> col_nomorhp = new TableColumn<>("Nomor Telepon");
+        TableColumn<Customer, String> col_alamat = new TableColumn<>("Alamat Customer");
 
-        TableColumn<Map, String> kodeProduk = new TableColumn<>("Kode Produk");
-        kodeProduk.setCellValueFactory(new MapValueFactory<>("Kode Produk"));
-        kodeProduk.setPrefWidth(717);
+        col_id.setCellValueFactory(v -> v.getValue().idCustomerProperty());
+        col_nama.setCellValueFactory(v -> v.getValue().namaCustomerProperty());
+        col_nomorhp.setCellValueFactory(v -> v.getValue().nomorHpCustomerProperty());
+        col_alamat.setCellValueFactory(v -> v.getValue().alamatCustomerProperty());
 
-        TableColumn<Map, String> namaProduk = new TableColumn<>("Nama Produk");
-        namaProduk.setCellValueFactory(new MapValueFactory<>("Nama Produk"));
-        namaProduk.setPrefWidth(717);
+        ArrayList<TableColumn<Customer, String>> col = new ArrayList<>();
+        col.add(col_id);
+        col.add(col_nama);
+        col.add(col_nomorhp);
+        col.add(col_alamat);
 
-        tabelProduk.getColumns().add(kodeProduk);
-        tabelProduk.getColumns().add(namaProduk);
+        for(int i = 0; i< col.size(); i++){
+            col.get(i).prefWidthProperty().bind(tb.widthProperty().divide(col.size()));
+            tb.getColumns().add(col.get(i));
+        }
 
-        ObservableList<Map<String, Object>> items = 
-        FXCollections.<Map<String, Object>>observableArrayList();
+        return tb;
+    }
 
-        Map<String, Object> item1 = new HashMap<>();
-        item1.put("Kode Produk", "PD0000000001");
-        item1.put("Nama Produk", "Regular Cleaning");
+    public HBox getTable() {
+        HBox table = new HBox();
+        TableView<Customer> tb = createTable();
 
-        items.add(item1);
+        HBox.setHgrow(table, Priority.ALWAYS);
+        HBox.setHgrow(tb, Priority.ALWAYS);
+        VBox.setVgrow(tb, Priority.ALWAYS);
 
-        Map<String, Object> item2 = new HashMap<>();
-        item2.put("Kode Produk", "PD0000000002");
-        item2.put("Nama Produk", "Deep Cleaning");
+        List<Customer> list_cust = getData();
 
-        items.add(item2);
+        for(int y = 0; y < list_cust.size(); y++) {
+            tb.getItems().add(list_cust.get(y));
+        }
 
-        Map<String, Object> item3 = new HashMap<>();
-        item3.put("Kode Produk", "PD0000000003");
-        item3.put("Nama Produk", "Inspection");
+        table.getChildren().add(tb);
 
-        items.add(item3);
+        return table;
+    }
 
-        Map<String, Object> item4 = new HashMap<>();
-        item4.put("Kode Produk", "PD0000000004");
-        item4.put("Nama Produk", "Gardening");
+    public List<Customer> getData() {
+        DB db = new DB();
+        String query_admin = "SELECT * FROM customer";
 
-        items.add(item4);
+        List<Object> rs = db.runQuery(query_admin);
+        listCust = new ArrayList<Customer>();
 
-        tabelProduk.getItems().addAll(items);
+        for(int i = 0; i < rs.size(); i++) {
+            Customer cust = new Customer(rs.get(i));
 
-        return tabelProduk;
+            listCust.add(cust);
+        }
+        
+        return listCust;
     }
 
     public Pane getRootPane() {

@@ -10,14 +10,17 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import com.pojokbersih.Table.Produk;
+import com.pojokbersih.Table.Staff;
+import com.pojokbersih.Table.TableCustomer;
+import com.pojokbersih.Table.Transaksi;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -73,7 +76,7 @@ public class Home {
         customer.getStyleClass().add("btn");
 
         customer.setOnAction(e -> {
-            Customer customerr = new Customer();
+            TableCustomer customerr = new TableCustomer();
             rootPane.getScene().setRoot(customerr.getRootPane());
         });
 
