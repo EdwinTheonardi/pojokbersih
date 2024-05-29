@@ -14,8 +14,8 @@ import javafx.scene.text.Text;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.pojokbersih.Table.Produk;
-import com.pojokbersih.Table.Staff;
+import com.pojokbersih.Table.TableProduk;
+import com.pojokbersih.Table.TableStaff;
 import com.pojokbersih.Table.TableCustomer;
 import com.pojokbersih.Table.Transaksi;
 
@@ -84,7 +84,7 @@ public class Home {
         staff.getStyleClass().add("btn");
 
         staff.setOnAction(e -> {
-            Staff stafff = new Staff();
+            TableStaff stafff = new TableStaff();
             rootPane.getScene().setRoot(stafff.getRootPane());
         });
 
@@ -92,7 +92,7 @@ public class Home {
         produk.getStyleClass().add("btn");
 
         produk.setOnAction(e -> {
-            Produk produkk = new Produk();
+            TableProduk produkk = new TableProduk();
             rootPane.getScene().setRoot(produkk.getRootPane());
         });
 

@@ -90,7 +90,7 @@ public class Transaksi {
         staff.getStyleClass().add("btn");
 
         staff.setOnAction(e -> {
-            Staff stafff = new Staff();
+            TableStaff stafff = new TableStaff();
             rootPane.getScene().setRoot(stafff.getRootPane());
         });
 
@@ -98,7 +98,7 @@ public class Transaksi {
         produk.getStyleClass().add("btn");
 
         produk.setOnAction(e -> {
-            Produk produkk = new Produk();
+            TableProduk produkk = new TableProduk();
             rootPane.getScene().setRoot(produkk.getRootPane());
         });
 

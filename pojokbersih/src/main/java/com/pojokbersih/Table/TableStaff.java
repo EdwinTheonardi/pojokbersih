@@ -1,10 +1,14 @@
 package com.pojokbersih.Table;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.pojokbersih.App;
+import com.pojokbersih.DB;
 import com.pojokbersih.Home;
+import com.pojokbersih.Model.Staff;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,15 +27,16 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class Staff {
+public class TableStaff {
         private final BorderPane rootPane;
 
-    public Staff() {
+    public TableStaff() {
         rootPane = new BorderPane();
         rootPane.getStyleClass().add("root-pane");
         VBox center = new VBox();
@@ -39,7 +44,7 @@ public class Staff {
         center.getChildren().add(menu());
         center.getChildren().add(labelTabel());
         center.getChildren().add(tool());
-        center.getChildren().add(table());
+        center.getChildren().add(getTable());
         rootPane.setCenter(center);
     }
 
@@ -86,7 +91,7 @@ public class Staff {
         staff.getStyleClass().add("btn");
 
         staff.setOnAction(e -> {
-            Staff stafff = new Staff();
+            TableStaff stafff = new TableStaff();
             rootPane.getScene().setRoot(stafff.getRootPane());
         });
 
@@ -94,7 +99,7 @@ public class Staff {
         produk.getStyleClass().add("btn");
 
         produk.setOnAction(e -> {
-            Produk produkk = new Produk();
+            TableProduk produkk = new TableProduk();
             rootPane.getScene().setRoot(produkk.getRootPane());
         });
 
@@ -287,72 +292,85 @@ public class Staff {
         return tabel;
     }
 
+    private List<Staff> listStaff;
+    private TableView<Staff> tb = new TableView<Staff>();
+
     @SuppressWarnings("unchecked")
-    public TableView table() {
-        TableView tabelStaff = new TableView();
-        tabelStaff.getStyleClass().add("tabel-jadwal");
+    public TableView<Staff> createTable() {
+        TableColumn<Staff, String> col_id = new TableColumn<>("Kode Staff");
+        TableColumn<Staff, String> col_nama = new TableColumn<>(" Nama Staff");
+        TableColumn<Staff, String> col_jeniskelamin = new TableColumn<>("Jenis Kelamin");
+        TableColumn<Staff, String> col_tempatlahir = new TableColumn<>("Tempat Lahir");
+        TableColumn<Staff, String> col_tanggallahir = new TableColumn<>("Tanggal Lahir");
+        TableColumn<Staff, String> col_alamat = new TableColumn<>("Alamat Staff");
+        TableColumn<Staff, String> col_nomorhp = new TableColumn<>("Nomor Telepon");
+        TableColumn<Staff, String> col_email = new TableColumn<>("Email Staff");
+        TableColumn<Staff, String> col_spesialisasi = new TableColumn<>("Spesialisasi Staff");
 
-        TableColumn<Map, String> kodeStaff = new TableColumn<>("Kode Staff");
-        kodeStaff.setCellValueFactory(new MapValueFactory<>("Kode Staff"));
-        kodeStaff.setPrefWidth(150);
+        col_id.setCellValueFactory(v-> v.getValue().idStaffProperty());
+        col_nama.setCellValueFactory(v-> v.getValue().namaStaffProperty());
+        col_jeniskelamin.setCellValueFactory(v-> v.getValue().jenisKelaminStaffProperty());
+        col_tempatlahir.setCellValueFactory(v-> v.getValue().tempatLahirStaffProperty());
+        col_tanggallahir.setCellValueFactory(v-> v.getValue().tanggalLahirStaffProperty());
+        col_alamat.setCellValueFactory(v-> v.getValue().alamatStaffProperty());
+        col_nomorhp.setCellValueFactory(v-> v.getValue().nomorHpStaffProperty());
+        col_email.setCellValueFactory(v-> v.getValue().emailStaffProperty());
+        col_spesialisasi.setCellValueFactory(v-> v.getValue().spesialisasiStaffProperty());
 
-        TableColumn<Map, String> namaStaff = new TableColumn<>("Nama Staff");
-        namaStaff.setCellValueFactory(new MapValueFactory<>("Nama Staff"));
-        namaStaff.setPrefWidth(150);
-        
-        TableColumn<Map, String> jenisKelamin = new TableColumn<>("Jenis Kelamin");
-        jenisKelamin.setCellValueFactory(new MapValueFactory<>("Jenis Kelamin"));
-        jenisKelamin.setPrefWidth(150);
+        ArrayList<TableColumn<Staff, String>> col = new ArrayList<>();
+        col.add(col_id);
+        col.add(col_nama);
+        col.add(col_jeniskelamin);
+        col.add(col_tempatlahir);
+        col.add(col_tanggallahir);
+        col.add(col_alamat);
+        col.add(col_nomorhp);
+        col.add(col_email);
+        col.add(col_spesialisasi);
 
-        TableColumn<Map, String> tempatLahir = new TableColumn<>("Tempat Lahir");
-        tempatLahir.setCellValueFactory(new MapValueFactory<>("Tempat Lahir"));
-        tempatLahir.setPrefWidth(140);
+        for (int i = 0; i< col.size(); i++) {
+            col.get(i).prefWidthProperty().bind(tb.widthProperty().divide(col.size()));
+            tb.getColumns().add(col.get(i));
+        }
 
-        TableColumn<Map, String> tanggalLahir = new TableColumn<>("Tanggal Lahir");
-        tanggalLahir.setCellValueFactory(new MapValueFactory<>("Tanggal Lahir"));
-        tanggalLahir.setPrefWidth(150);
-
-        TableColumn<Map, String> alamat = new TableColumn<>("Alamat");
-        alamat.setCellValueFactory(new MapValueFactory<>("Alamat"));
-        alamat.setPrefWidth(314);
-        alamat.getStyleClass().add("wrap-text");
-
-        TableColumn<Map, String> noTelepon = new TableColumn<>("Nomor Telepon");
-        noTelepon.setCellValueFactory(new MapValueFactory<>("Nomor Telepon"));
-        noTelepon.setPrefWidth(160);
-
-        TableColumn<Map, String> email = new TableColumn<>("Email");
-        email.setCellValueFactory(new MapValueFactory<>("Email"));
-        email.setPrefWidth(220);
-
-        tabelStaff.getColumns().add(kodeStaff);
-        tabelStaff.getColumns().add(namaStaff);
-        tabelStaff.getColumns().add(jenisKelamin);
-        tabelStaff.getColumns().add(tempatLahir);
-        tabelStaff.getColumns().add(tanggalLahir);
-        tabelStaff.getColumns().add(alamat);
-        tabelStaff.getColumns().add(noTelepon);
-        tabelStaff.getColumns().add(email);
-
-        ObservableList<Map<String, Object>> items = 
-        FXCollections.<Map<String, Object>>observableArrayList();
-
-        Map<String, Object> item1 = new HashMap<>();
-        item1.put("Kode Staff", "ST0000000001");
-        item1.put("Nama Staff", "Vinsen");
-        item1.put("Jenis Kelamin", "Laki-laki");
-        item1.put("Tempat Lahir", "Pontianak");
-        item1.put("Tanggal Lahir", "02/06/1999");
-        item1.put("Alamat", "Jl. Trunojoyo");
-        item1.put("Nomor Telepon", "081234567890");
-        item1.put("Email", "pak.vinsen@gmail.com");
-
-        items.add(item1);
-
-        tabelStaff.getItems().addAll(items);
-
-        return tabelStaff;
+        return tb;
     }
+
+    public HBox getTable() {
+        HBox table = new HBox();
+        TableView<Staff> tb = createTable();
+
+        HBox.setHgrow(table, Priority.ALWAYS);
+        HBox.setHgrow(tb, Priority.ALWAYS);
+        VBox.setVgrow(tb, Priority.ALWAYS);
+
+        List<Staff> list_cust = getData();
+
+        for(int y = 0; y < list_cust.size(); y++) {
+            tb.getItems().add(list_cust.get(y));
+        }
+
+        table.getChildren().add(tb);
+
+        return table;
+    }
+
+    public List<Staff> getData() {
+        DB db = new DB();
+        String query_admin = "SELECT * FROM staff";
+
+        List<Object> rs = db.runQuery(query_admin);
+        listStaff = new ArrayList<Staff>();
+
+        for(int i = 0; i < rs.size(); i++) {
+            Staff staff = new Staff(rs.get(i));
+
+            listStaff.add(staff);
+        }
+        
+        return listStaff;
+    }
+
 
     public Pane getRootPane() {
         return rootPane;

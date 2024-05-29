@@ -1,10 +1,14 @@
 package com.pojokbersih.Table;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.pojokbersih.App;
+import com.pojokbersih.DB;
 import com.pojokbersih.Home;
+import com.pojokbersih.Model.Produk;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,15 +24,16 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class Produk {
+public class TableProduk {
         private final BorderPane rootPane;
 
-    public Produk() {
+    public TableProduk() {
         rootPane = new BorderPane();
         rootPane.getStyleClass().add("root-pane");
         VBox center = new VBox();
@@ -36,7 +41,7 @@ public class Produk {
         center.getChildren().add(menu());
         center.getChildren().add(labelTabel());
         center.getChildren().add(tool());
-        center.getChildren().add(table());
+        center.getChildren().add(getTable());
         rootPane.setCenter(center);
     }
 
@@ -83,7 +88,7 @@ public class Produk {
         staff.getStyleClass().add("btn");
 
         staff.setOnAction(e -> {
-            Staff stafff = new Staff();
+            TableStaff stafff = new TableStaff();
             rootPane.getScene().setRoot(stafff.getRootPane());
         });
 
@@ -91,7 +96,7 @@ public class Produk {
         produk.getStyleClass().add("btn");
 
         produk.setOnAction(e -> {
-            Produk produkk = new Produk();
+            TableProduk produkk = new TableProduk();
             rootPane.getScene().setRoot(produkk.getRootPane());
         });
 
@@ -193,53 +198,64 @@ public class Produk {
         return tabel;
     }
 
+    private List<Produk> listProduk;
+    private TableView<Produk> tb = new TableView<Produk>();
+
     @SuppressWarnings("unchecked")
-    public TableView table() {
-        TableView tabelProduk = new TableView();
-        tabelProduk.getStyleClass().add("tabel-jadwal");
+    public TableView<Produk> createTable() {
+        TableColumn<Produk, String> col_id = new TableColumn<>("Kode Produk");
+        TableColumn<Produk, String> col_nama = new TableColumn<>("Nama Produk");
 
-        TableColumn<Map, String> kodeProduk = new TableColumn<>("Kode Produk");
-        kodeProduk.setCellValueFactory(new MapValueFactory<>("Kode Produk"));
-        kodeProduk.setPrefWidth(717);
+        col_id.setCellValueFactory(v-> v.getValue().idProdukProperty());
+        col_nama.setCellValueFactory(v-> v.getValue().namaProdukProperty());
 
-        TableColumn<Map, String> namaProduk = new TableColumn<>("Nama Produk");
-        namaProduk.setCellValueFactory(new MapValueFactory<>("Nama Produk"));
-        namaProduk.setPrefWidth(717);
+        ArrayList<TableColumn<Produk, String>> col = new ArrayList<>();
+        col.add(col_id);
+        col.add(col_nama);
 
-        tabelProduk.getColumns().add(kodeProduk);
-        tabelProduk.getColumns().add(namaProduk);
+        for (int i = 0; i< col.size(); i++) {
+            col.get(i).prefWidthProperty().bind(tb.widthProperty().divide(col.size()));
+            tb.getColumns().add(col.get(i));
+        }
 
-        ObservableList<Map<String, Object>> items = 
-        FXCollections.<Map<String, Object>>observableArrayList();
-
-        Map<String, Object> item1 = new HashMap<>();
-        item1.put("Kode Produk", "PD0000000001");
-        item1.put("Nama Produk", "Regular Cleaning");
-
-        items.add(item1);
-
-        Map<String, Object> item2 = new HashMap<>();
-        item2.put("Kode Produk", "PD0000000002");
-        item2.put("Nama Produk", "Deep Cleaning");
-
-        items.add(item2);
-
-        Map<String, Object> item3 = new HashMap<>();
-        item3.put("Kode Produk", "PD0000000003");
-        item3.put("Nama Produk", "Inspection");
-
-        items.add(item3);
-
-        Map<String, Object> item4 = new HashMap<>();
-        item4.put("Kode Produk", "PD0000000004");
-        item4.put("Nama Produk", "Gardening");
-
-        items.add(item4);
-
-        tabelProduk.getItems().addAll(items);
-
-        return tabelProduk;
+        return tb;
     }
+
+    public HBox getTable() {
+        HBox table = new HBox();
+        TableView<Produk> tb = createTable();
+
+        HBox.setHgrow(table, Priority.ALWAYS);
+        HBox.setHgrow(tb, Priority.ALWAYS);
+        VBox.setVgrow(tb, Priority.ALWAYS);
+
+        List<Produk> list_produk = getData();
+
+        for(int y = 0; y < list_produk.size(); y++) {
+            tb.getItems().add(list_produk.get(y));
+        }
+
+        table.getChildren().add(tb);
+
+        return table;
+    }
+
+    public List<Produk> getData() {
+        DB db = new DB();
+        String query_admin = "SELECT * FROM produk";
+
+        List<Object> rs = db.runQuery(query_admin);
+        listProduk = new ArrayList<Produk>();
+
+        for(int i = 0; i < rs.size(); i++) {
+            Produk produk = new Produk(rs.get(i));
+
+            listProduk.add(produk);
+        }
+        
+        return listProduk;
+    }
+
 
     public Pane getRootPane() {
         return rootPane;
