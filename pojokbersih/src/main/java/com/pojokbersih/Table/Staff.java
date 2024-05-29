@@ -70,7 +70,7 @@ public class Staff {
         transaksi.getStyleClass().add("btn");
 
         transaksi.setOnAction(e -> {
-            Transaksi transaksii = new Transaksi();
+            TableTransaksi transaksii = new TableTransaksi();
             rootPane.getScene().setRoot(transaksii.getRootPane());
         });
 

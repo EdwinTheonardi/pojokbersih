@@ -17,7 +17,7 @@ import java.util.Map;
 import com.pojokbersih.Table.Produk;
 import com.pojokbersih.Table.Staff;
 import com.pojokbersih.Table.TableCustomer;
-import com.pojokbersih.Table.Transaksi;
+import com.pojokbersih.Table.TableTransaksi;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -68,7 +68,7 @@ public class Home {
         transaksi.getStyleClass().add("btn");
 
         transaksi.setOnAction(e -> {
-            Transaksi transaksii = new Transaksi();
+            TableTransaksi transaksii = new TableTransaksi();
             rootPane.getScene().setRoot(transaksii.getRootPane());
         });
 

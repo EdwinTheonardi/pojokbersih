@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 24, 2024 at 03:14 AM
+-- Generation Time: May 29, 2024 at 12:03 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -59,7 +59,8 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`id_customer`, `nama_customer`, `nomor_hp`, `alamat_customer`) VALUES
-(1, 'Daniel', '086789895212', 'Di rumahnya');
+(1, 'Daniel', '086789895212', 'Di rumahnya'),
+(2, 'Ellaaa', '4324234', 'fdsfsdfsd');
 
 -- --------------------------------------------------------
 
@@ -69,9 +70,16 @@ INSERT INTO `customer` (`id_customer`, `nama_customer`, `nomor_hp`, `alamat_cust
 
 CREATE TABLE `produk` (
   `id_produk` int(4) NOT NULL,
-  `kode_produk` varchar(10) NOT NULL,
   `nama_produk` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `produk`
+--
+
+INSERT INTO `produk` (`id_produk`, `nama_produk`) VALUES
+(1, 'Deep Cleaning'),
+(2, 'Regular Cleaning');
 
 -- --------------------------------------------------------
 
@@ -81,15 +89,23 @@ CREATE TABLE `produk` (
 
 CREATE TABLE `staff` (
   `id_staff` int(4) NOT NULL,
-  `kode_staff` varchar(10) NOT NULL,
   `nama_staff` varchar(30) NOT NULL,
   `jk_staff` enum('L','P') NOT NULL,
   `tempat_lahir` varchar(100) NOT NULL,
   `tgl_lahir` date NOT NULL,
   `alamat_staff` varchar(100) NOT NULL,
-  `nomor_hp` int(13) NOT NULL,
-  `email_staff` varchar(50) NOT NULL
+  `nomor_hp` varchar(13) NOT NULL,
+  `email_staff` varchar(50) NOT NULL,
+  `spesialisasi_staff` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `staff`
+--
+
+INSERT INTO `staff` (`id_staff`, `nama_staff`, `jk_staff`, `tempat_lahir`, `tgl_lahir`, `alamat_staff`, `nomor_hp`, `email_staff`, `spesialisasi_staff`) VALUES
+(1, 'Aldio', 'L', 'Sintang', '2003-05-05', 'Purnama', '081234567890', 'aldio@itbss.ac.id', 'Deep Cleaning'),
+(2, 'Edwin', 'L', 'Pontianak', '2004-10-31', 'Jl. Imam Bonjol', '081122334455', 'edwin.theonardi@itbss.ac.id', 'Gardening');
 
 -- --------------------------------------------------------
 
@@ -110,6 +126,13 @@ CREATE TABLE `transaksi` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `transaksi`
+--
+
+INSERT INTO `transaksi` (`id_transaksi`, `id_customer`, `id_staff`, `pic`, `id_produk`, `tgl_transaksi`, `tgl_pengerjaan`, `biaya_jasa`, `status`) VALUES
+(1, 1, 1, 2, 1, '2024-05-28', '2024-05-30', 350000, 'deal');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -123,13 +146,21 @@ ALTER TABLE `admin`
 -- Indexes for table `customer`
 --
 ALTER TABLE `customer`
-  ADD PRIMARY KEY (`id_customer`);
+  ADD PRIMARY KEY (`id_customer`),
+  ADD KEY `id_customer` (`id_customer`),
+  ADD KEY `id_customer_2` (`id_customer`);
 
 --
 -- Indexes for table `produk`
 --
 ALTER TABLE `produk`
   ADD PRIMARY KEY (`id_produk`);
+
+--
+-- Indexes for table `staff`
+--
+ALTER TABLE `staff`
+  ADD PRIMARY KEY (`id_staff`);
 
 --
 -- Indexes for table `transaksi`
@@ -151,19 +182,25 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `id_customer` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_customer` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `produk`
 --
 ALTER TABLE `produk`
-  MODIFY `id_produk` int(4) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_produk` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `staff`
+--
+ALTER TABLE `staff`
+  MODIFY `id_staff` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id_transaksi` int(4) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_transaksi` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -1,41 +1,37 @@
 package com.pojokbersih.Table;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.pojokbersih.App;
+import com.pojokbersih.DB;
 import com.pojokbersih.Home;
+import com.pojokbersih.Model.Transaksi;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.geometry.HPos;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.cell.MapValueFactory;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class Transaksi {
+public class TableTransaksi {
     private final BorderPane rootPane;
 
-    public Transaksi() {
+    public TableTransaksi() {
         rootPane = new BorderPane();
         rootPane.getStyleClass().add("root-pane");
         VBox center = new VBox();
@@ -43,7 +39,7 @@ public class Transaksi {
         center.getChildren().add(menu());
         center.getChildren().add(labelTabel());
         center.getChildren().add(tool());
-        center.getChildren().add(table());
+        center.getChildren().add(getTable());
         rootPane.setCenter(center);
     }
 
@@ -74,7 +70,7 @@ public class Transaksi {
         transaksi.getStyleClass().add("btn");
 
         transaksi.setOnAction(e -> {
-            Transaksi transaksii = new Transaksi();
+            TableTransaksi transaksii = new TableTransaksi();
             rootPane.getScene().setRoot(transaksii.getRootPane());
         });
 
@@ -355,70 +351,83 @@ public class Transaksi {
         return tabel;
     }
 
+    private List<Transaksi> listTransaksi;
+    private TableView<Transaksi> tb = new TableView<Transaksi>();
+
     @SuppressWarnings("unchecked")
-    public TableView table() {
-        TableView tabelTransaksi = new TableView();
-        tabelTransaksi.getStyleClass().add("tabel-jadwal");
+    public TableView<Transaksi> createTable() {
+        TableColumn<Transaksi, String> col_idtransaksi = new TableColumn<>("Kode Transaksi");
+        TableColumn<Transaksi, String> col_idcustomer = new TableColumn<>("Kode Customer");
+        TableColumn<Transaksi, String> col_idstaff = new TableColumn<>("Kode Staff");
+        TableColumn<Transaksi, String> col_pic = new TableColumn<>("PIC");
+        TableColumn<Transaksi, String> col_idproduk = new TableColumn<>("Kode Produk");
+        TableColumn<Transaksi, String> col_tanggaltransaksi = new TableColumn<>("Tanggal Transaksi");
+        TableColumn<Transaksi, String> col_tanggalpengerjaan = new TableColumn<>("Tanggal Pengerjaan");
+        TableColumn<Transaksi, String> col_biayajasa = new TableColumn<>("Biaya Jasa");
+        TableColumn<Transaksi, String> col_status = new TableColumn<>("Status");
 
-        TableColumn<Map, String> kodeTransaksi = new TableColumn<>("Kode Transaksi");
-        kodeTransaksi.setCellValueFactory(new MapValueFactory<>("Kode Transaksi"));
-        kodeTransaksi.setPrefWidth(300);
+        col_idtransaksi.setCellValueFactory(v -> v.getValue().idTransaksiProperty());
+        col_idcustomer.setCellValueFactory(v -> v.getValue().idCustomerProperty());
+        col_idstaff.setCellValueFactory(v -> v.getValue().idStaffProperty());
+        col_pic.setCellValueFactory(v -> v.getValue().picProperty());
+        col_idproduk.setCellValueFactory(v -> v.getValue().idProdukProperty());
+        col_tanggaltransaksi.setCellValueFactory(v -> v.getValue().tanggalTransaksiProperty());
+        col_tanggalpengerjaan.setCellValueFactory(v -> v.getValue().tanggalPengerjaanProperty());
+        col_biayajasa.setCellValueFactory(v -> v.getValue().biayaJasaProperty());
+        col_status.setCellValueFactory(v -> v.getValue().statusProperty());
 
-        TableColumn<Map, String> tanggalTransaksi = new TableColumn<>("Tanggal Transaksi");
-        tanggalTransaksi.setCellValueFactory(new MapValueFactory<>("Tanggal Transaksi"));
-        tanggalTransaksi.setPrefWidth(200);
+        ArrayList<TableColumn<Transaksi, String>> col = new ArrayList<>();
+        col.add(col_idtransaksi);
+        col.add(col_idcustomer);
+        col.add(col_idstaff);
+        col.add(col_pic);
+        col.add(col_idproduk);
+        col.add(col_tanggaltransaksi);
+        col.add(col_tanggalpengerjaan);
+        col.add(col_biayajasa);
+        col.add(col_status);
 
-        TableColumn<Map, String> namaCustomer = new TableColumn<>("Nama Customer");
-        namaCustomer.setCellValueFactory(new MapValueFactory<>("Nama Customer"));
-        namaCustomer.setPrefWidth(300);
+        for(int i = 0; i< col.size(); i++){
+            col.get(i).prefWidthProperty().bind(tb.widthProperty().divide(col.size()));
+            tb.getColumns().add(col.get(i));
+        }
 
-        TableColumn<Map, String> pic = new TableColumn<>("PIC");
-        pic.setCellValueFactory(new MapValueFactory<>("PIC"));
-        pic.setPrefWidth(244);
+        return tb;
+    }
 
-        TableColumn<Map, String> biayaJasa = new TableColumn<>("Biaya Jasa");
-        biayaJasa.setCellValueFactory(new MapValueFactory<>("Biaya Jasa"));
-        biayaJasa.setPrefWidth(200);
-        biayaJasa.getStyleClass().add("wrap-text");
+    public HBox getTable() {
+        HBox table = new HBox();
+        TableView<Transaksi> tb = createTable();
 
-        TableColumn<Map, String> status = new TableColumn<>("Status");
-        status.setCellValueFactory(new MapValueFactory<>("Status"));
-        status.setPrefWidth(190);
-        status.getStyleClass().add("wrap-text");
+        HBox.setHgrow(table, Priority.ALWAYS);
+        HBox.setHgrow(tb, Priority.ALWAYS);
+        VBox.setVgrow(tb, Priority.ALWAYS);
 
-        tabelTransaksi.getColumns().add(kodeTransaksi);
-        tabelTransaksi.getColumns().add(tanggalTransaksi);
-        tabelTransaksi.getColumns().add(namaCustomer);
-        tabelTransaksi.getColumns().add(pic);
-        tabelTransaksi.getColumns().add(biayaJasa);
-        tabelTransaksi.getColumns().add(status);
+        List<Transaksi> list_transaksi = getData();
 
-        ObservableList<Map<String, Object>> items = 
-        FXCollections.<Map<String, Object>>observableArrayList();
+        for(int y = 0; y < list_transaksi.size(); y++) {
+            tb.getItems().add(list_transaksi.get(y));
+        }
 
-        Map<String, Object> item1 = new HashMap<>();
-        item1.put("Kode Transaksi", "PB0000000001");
-        item1.put("Tanggal Transaksi", "03/04/2024");
-        item1.put("Nama Customer", "Daniel");
-        item1.put("PIC", "Edwin");
-        item1.put("Biaya Jasa", "300000");
-        item1.put("Status", "Deal");
+        table.getChildren().add(tb);
 
-        items.add(item1);
+        return table;
+    }
 
-        Map<String, Object> item2 = new HashMap<>();
-        item2.put("Kode Transaksi", "PB0000000002");
-        item2.put("Tanggal Transaksi", "04/04/2024");
-        item2.put("Nama Customer", "Edwin");
-        item2.put("PIC", "Daniel");
-        item2.put("Biaya Jasa", "300000");
-        item2.put("Status", "On Going");
+    public List<Transaksi> getData() {
+        DB db = new DB();
+        String query_admin = "SELECT id_transaksi, c.nama_customer, s1.nama_staff, s2.nama_staff, p.nama_produk, tgl_transaksi, tgl_pengerjaan, biaya_jasa, status FROM customer AS c INNER JOIN transaksi AS t on c.id_customer = t.id_customer INNER JOIN staff AS s1 on s1.id_staff = t.id_staff INNER JOIN staff AS s2 on s2.id_staff = t.pic INNER JOIN produk AS p on p.id_produk = t.id_produk;";
 
-        items.add(item2);
+        List<Object> rs = db.runQuery(query_admin);
+        listTransaksi = new ArrayList<Transaksi>();
 
-        tabelTransaksi.getItems().addAll(items);
+        for(int i = 0; i < rs.size(); i++) {
+            Transaksi transaksi = new Transaksi(rs.get(i));
 
-        return tabelTransaksi;
+            listTransaksi.add(transaksi);
+        }
+        
+        return listTransaksi;
     }
 
     public Pane getRootPane() {
