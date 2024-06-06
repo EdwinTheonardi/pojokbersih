@@ -45,6 +45,7 @@ public class TableStaff {
         center.getChildren().add(labelTabel());
         center.getChildren().add(tool());
         center.getChildren().add(getTable());
+        center.getChildren().add(createButtonBox());
         rootPane.setCenter(center);
     }
 
@@ -116,9 +117,10 @@ public class TableStaff {
         HBox tool = new HBox(20);
         tool.getStyleClass().add("tool-box");
 
-            Button filterButton = new Button();
-            filterButton.setText("Filter");
-            filterButton.getStyleClass().add("filter-button");
+            ComboBox<String> filter = new ComboBox<>();
+            filter.getItems().addAll("Tanggal Terbaru", "Tanggal Terlama", "Not Contacted", "Deal", "On Going", "Done");
+            filter.setPromptText("Filter");
+            filter.getStyleClass().add("filter-button");
 
             TextField searchField = new TextField();
             searchField.getStyleClass().add("search-field");
@@ -277,7 +279,7 @@ public class TableStaff {
                 halamanTambah.show();
             });
         
-            tool.getChildren().addAll(filterButton, searchField, addButton);
+            tool.getChildren().addAll(filter, searchField, addButton);
         return tool;
     }
     
@@ -371,6 +373,20 @@ public class TableStaff {
         return listStaff;
     }
 
+    public HBox createButtonBox() {
+        HBox buttonBox = new HBox(10);
+        buttonBox.getStyleClass().add("button-box");
+    
+        Button editButton = new Button("Edit");
+        editButton.getStyleClass().add("edit-button");
+    
+        Button deleteButton = new Button("Delete");
+        deleteButton.getStyleClass().add("delete-button");
+    
+        buttonBox.getChildren().addAll(editButton, deleteButton);
+    
+        return buttonBox;
+    }
 
     public Pane getRootPane() {
         return rootPane;

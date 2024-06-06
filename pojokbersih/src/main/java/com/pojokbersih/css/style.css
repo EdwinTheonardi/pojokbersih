@@ -176,27 +176,28 @@
 /* Transaksi */
 .tool-box {
     -fx-background-color: transparent;
-    -fx-padding: 0px 0px 25px 50px;
+    -fx-padding: 0px 50px 25px 50px;
 }
 
 .filter-button {
-    -fx-padding: 5px 10px 5px 10px;
+    -fx-padding: 5px 5px 5px 5px;
     -fx-cursor: hand;
     -fx-background-color: #02886F;
     -fx-font-family: "OpenSans";
     -fx-font-size: 16px;
     -fx-font-weight: Bold;
     -fx-text-fill: #FFFFFF;
+    -fx-max-width: 200px;
 }
 
 .search-field {
-    -fx-padding: 5px 1060px 5px 10px;
+    -fx-padding: 11px 945px 11px 10px;
     -fx-background-color: #F3F3F3;
     -fx-font-size: 16px;
 }
 
 .add-button {
-    -fx-padding: 5px 10px 5px 10px;
+    -fx-padding: 11px 10px 11px 10px;
     -fx-cursor: hand;
     -fx-background-color: #02886F;
     -fx-font-family: "OpenSans";
@@ -239,3 +240,33 @@
 .button-wrap {
     -fx-padding: 50px 0px 0px 0px;
 }
+
+.button-box {
+    -fx-background-color: transparent;
+    -fx-alignment: baseline-right;
+    -fx-padding: 25px 50px 25px 0px;
+}
+
+.edit-button {
+    -fx-padding: 5px 10px 5px 10px;
+    -fx-cursor: hand;
+    -fx-background-color: #02886F;
+    -fx-font-family: "OpenSans";
+    -fx-font-size: 16px;
+    -fx-font-weight: Bold;
+    -fx-text-fill: #FFFFFF;
+}
+
+.delete-button {
+    -fx-padding: 5px 10px 5px 10px;
+    -fx-cursor: hand;
+    -fx-background-color: #FF0000;
+    -fx-font-family: "OpenSans";
+    -fx-font-size: 16px;
+    -fx-font-weight: Bold;
+    -fx-text-fill: #FFFFFF;
+}
+
+.combo-box-base .list-cell:empty {
+    -fx-text-fill: white;
+}   

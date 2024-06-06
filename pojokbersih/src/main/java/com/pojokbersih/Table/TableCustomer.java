@@ -14,6 +14,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -45,6 +47,7 @@ public class TableCustomer {
         center.getChildren().add(labelTabel());
         center.getChildren().add(tool());
         center.getChildren().add(getTable());
+        center.getChildren().add(createButtonBox());
         rootPane.setCenter(center);
     }
 
@@ -116,9 +119,10 @@ public class TableCustomer {
         HBox tool = new HBox(20);
         tool.getStyleClass().add("tool-box");
 
-            Button filterButton = new Button();
-            filterButton.setText("Filter");
-            filterButton.getStyleClass().add("filter-button");
+            ComboBox<String> filter = new ComboBox<>();
+            filter.getItems().addAll("Tanggal Terbaru", "Tanggal Terlama", "Not Contacted", "Deal", "On Going", "Done");
+            filter.setPromptText("Filter");
+            filter.getStyleClass().add("filter-button");
 
             TextField searchField = new TextField();
             searchField.getStyleClass().add("search-field");
@@ -199,7 +203,23 @@ public class TableCustomer {
                 saveButton.setText("Simpan");
                 saveButton.getStyleClass().add("save-button");
                 saveButton.setOnAction(e -> {
+                    Customer customer = new Customer();
+                    customer.setNamaCustomer(namaCustomerField.getText());
+                    customer.setNomorHpCustomer(nomorTelfonField.getText());
+                    customer.setAlamatCustomer(alamatCustomerField.getText());
+
+                    if(customer.create()) {
+                        Alert a = new Alert(AlertType.INFORMATION);
+                        a.setContentText("Data berhasil disimpan!");
+                        a.show();
+                    } else {
+                        Alert a = new Alert(AlertType.ERROR);
+                        a.setContentText("Data gagal disimpan!");
+                        a.show();
+                    }
                     halamanTambah.close();
+                    TableCustomer customerr = new TableCustomer();
+                    rootPane.getScene().setRoot(customerr.getRootPane());
                 });
 
                 HBox buttonWrapper = new HBox();
@@ -216,7 +236,7 @@ public class TableCustomer {
                 halamanTambah.show();
             });
         
-            tool.getChildren().addAll(filterButton, searchField, addButton);
+            tool.getChildren().addAll(filter, searchField, addButton);
         return tool;
     }
 
@@ -293,6 +313,158 @@ public class TableCustomer {
         }
         
         return listCust;
+    }
+
+    public HBox createButtonBox() {
+        HBox buttonBox = new HBox(10);
+        buttonBox.getStyleClass().add("button-box");
+    
+        Button editButton = new Button("Edit");
+        editButton.getStyleClass().add("edit-button");
+
+        editButton.setOnAction(e -> {
+            HBox tableHBox = getTable();
+            TableView<Customer> tb = (TableView<Customer>) tableHBox.getChildren().get(0);
+            Customer selectedCustomer = tb.getSelectionModel().getSelectedItem();
+            if (selectedCustomer != null) {
+                Stage halamanEdit = new Stage();
+                halamanEdit.initModality(Modality.APPLICATION_MODAL);
+                halamanEdit.setTitle("Edit Customer");
+                halamanEdit.setWidth(1280);
+                halamanEdit.setHeight(720);
+
+                StackPane halamanBaru = new StackPane();
+                halamanBaru.getStylesheets().add(App.class.getResource("css/style.css").toExternalForm());
+                halamanBaru.getStyleClass().add("halaman-baru");
+
+                VBox formEdit = new VBox();
+                Label formTitle = new Label("Edit Customer");
+                formTitle.getStyleClass().add("form-title");
+                formEdit.getChildren().add(formTitle);
+
+                StackPane formTitleWrapper = new StackPane();
+                formTitleWrapper.getChildren().add(formTitle);
+                formTitleWrapper.setPrefWidth(200);
+                StackPane.setAlignment(formTitle, Pos.CENTER);
+                formEdit.getChildren().add(formTitleWrapper);
+
+                // row 1
+                GridPane row1 = new GridPane();
+                row1.getStyleClass().add("form-grid");
+                row1.setHgap(10);
+                row1.setVgap(5);
+                Label namaCustomerLabel = new Label("Nama Customer:");
+                namaCustomerLabel.getStyleClass().add("form-label");
+                namaCustomerLabel.setPrefSize(200, 20);
+                TextField namaCustomerField = new TextField();
+                namaCustomerField.setPrefSize(200, 20);
+                namaCustomerField.setText(selectedCustomer.getNamaCustomer());
+                GridPane.setConstraints(namaCustomerLabel, 0, 0);
+                GridPane.setConstraints(namaCustomerField, 1, 0);
+                row1.getChildren().addAll(namaCustomerLabel, namaCustomerField);
+                formEdit.getChildren().add(row1);
+
+                // row 2
+                GridPane row2 = new GridPane();
+                row2.getStyleClass().add("form-grid");
+                row2.setHgap(10);
+                row2.setVgap(5);
+                Label nomorTelfonLabel = new Label("Nomor Telepon:");
+                nomorTelfonLabel.getStyleClass().add("form-label");
+                nomorTelfonLabel.setPrefSize(200, 20);
+                TextField nomorTelfonField = new TextField();
+                nomorTelfonField.setPrefSize(200, 20);
+                nomorTelfonField.setText(selectedCustomer.getNomorHpCustomer());
+                GridPane.setConstraints(nomorTelfonLabel, 0, 0);
+                GridPane.setConstraints(nomorTelfonField, 1, 0);
+                row2.getChildren().addAll(nomorTelfonLabel, nomorTelfonField);
+                formEdit.getChildren().add(row2);
+
+                // row 3
+                GridPane row3 = new GridPane();
+                row3.getStyleClass().add("form-grid");
+                row3.setHgap(10);
+                row3.setVgap(5);
+                Label alamatCustomerLabel = new Label("Alamat Customer:");
+                alamatCustomerLabel.getStyleClass().add("form-label");
+                alamatCustomerLabel.setPrefSize(200, 20);
+                TextArea alamatCustomerField = new TextArea();
+                alamatCustomerField.setPrefSize(200, 80);
+                alamatCustomerField.setText(selectedCustomer.getAlamatCustomer());
+                GridPane.setConstraints(alamatCustomerLabel, 0, 0);
+                GridPane.setConstraints(alamatCustomerField, 1, 0);
+                row3.getChildren().addAll(alamatCustomerLabel, alamatCustomerField);
+                formEdit.getChildren().add(row3);
+
+                Button saveButton = new Button();
+                saveButton.setText("Simpan");
+                saveButton.getStyleClass().add("save-button");
+                saveButton.setOnAction(event -> {
+                    selectedCustomer.setNamaCustomer(namaCustomerField.getText());
+                    selectedCustomer.setNomorHpCustomer(nomorTelfonField.getText());
+                    selectedCustomer.setAlamatCustomer(alamatCustomerField.getText());
+
+                    if (selectedCustomer.update()) {
+                        Alert a = new Alert(AlertType.INFORMATION);
+                        a.setContentText("Data berhasil diupdate!");
+                        a.show();
+                    } else {
+                        Alert a = new Alert(AlertType.ERROR);
+                        a.setContentText("Data gagal diupdate!");
+                        a.show();
+                    }
+                    halamanEdit.close();
+                    TableCustomer customerr = new TableCustomer();
+                    rootPane.getScene().setRoot(customerr.getRootPane());
+                });
+
+                HBox buttonWrapper = new HBox();
+                buttonWrapper.getStyleClass().add("button-wrap");
+                buttonWrapper.setAlignment(Pos.CENTER);
+                buttonWrapper.getChildren().add(saveButton);
+
+                formEdit.getChildren().add(buttonWrapper);
+
+                halamanBaru.getChildren().add(formEdit);
+
+                Scene scene = new Scene(halamanBaru);
+                halamanEdit.setScene(scene);
+                halamanEdit.show();
+            } else {
+                Alert a = new Alert(AlertType.WARNING);
+                a.setContentText("Pilih customer yang ingin diedit!");
+                a.show();
+            }
+        });
+    
+        Button deleteButton = new Button("Delete");
+        deleteButton.getStyleClass().add("delete-button");
+        deleteButton.setOnAction(e -> {
+            HBox tableHBox = getTable();
+            TableView<Customer> tb = (TableView<Customer>) tableHBox.getChildren().get(0);
+            Customer selectedCustomer = tb.getSelectionModel().getSelectedItem();
+            if (selectedCustomer != null) {
+                if (selectedCustomer.delete()) {
+                    Alert a = new Alert(AlertType.INFORMATION);
+                    a.setContentText("Data berhasil dihapus!");
+                    a.show();
+                    TableCustomer customerr = new TableCustomer();
+                    rootPane.getScene().setRoot(customerr.getRootPane());
+                } else {
+                    Alert a = new Alert(AlertType.ERROR);
+                    a.setContentText("Data gagal dihapus!");
+                    a.show();
+                }
+            } else {
+                Alert a = new Alert(AlertType.WARNING);
+                a.setContentText("Pilih customer yang ingin dihapus!");
+                a.show();
+            }
+        });
+
+        buttonBox.getChildren().addAll(editButton, deleteButton);
+    
+        return buttonBox;
     }
 
     public Pane getRootPane() {

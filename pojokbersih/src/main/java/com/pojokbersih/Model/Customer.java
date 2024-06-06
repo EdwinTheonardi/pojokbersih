@@ -3,6 +3,8 @@ package com.pojokbersih.Model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.pojokbersih.DB;
+
 import javafx.beans.property.*;
 
 public class Customer {
@@ -76,5 +78,25 @@ public class Customer {
         return alamatCustomer;
     }
     
+    public Boolean create() {
+        String sql = "INSERT INTO customer (nama_customer, nomor_hp, alamat_customer) VALUES ('" + getNamaCustomer() + "', '" + getNomorHpCustomer() + "', '" + getAlamatCustomer() + "')";
+        DB db = new DB();
+
+        return db.runSql(sql);
+    }
+
+    public Boolean update() {
+        String sql = "UPDATE customer SET nama_customer = '" + getNamaCustomer() + "', nomor_hp = '" + getNomorHpCustomer() + "', alamat_customer = '" + getAlamatCustomer() + "' WHERE id_customer = " + getIdCustomer();
+        DB db = new DB();
+    
+        return db.runSql(sql);
+    }
+
+    public Boolean delete() {
+        String sql = "DELETE FROM customer WHERE id_customer = '" + getIdCustomer() + "'";
+        DB db = new DB();
+
+        return db.runSql(sql);
+    }
 
 }
