@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -86,7 +87,7 @@ public class App extends Application {
         // Username & Password Field
         TextField usernameField = new TextField();
         usernameField.setPrefSize(300, 35);
-        TextField passwordField = new TextField();
+        PasswordField passwordField = new PasswordField();
         passwordField.setPrefSize(300, 35);
 
         // Login Button
@@ -95,7 +96,6 @@ public class App extends Application {
         login.setPrefSize(300, 35);
         grid.setMargin(login, new Insets(125, 0, 0, 0));
         
-        // grid.add(logoView, 0, 0);
         grid.add(loginTitle, 0, 1);
         grid.add(username, 0, 2);
         grid.add(usernameField, 0, 3);

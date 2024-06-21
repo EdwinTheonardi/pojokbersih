@@ -124,7 +124,7 @@
 }
 
 .label-tabel-transaksi {
-    -fx-padding: 0px 0px 25px 50px;
+    -fx-padding: 0px 0px 0px 50px;
     -fx-font-family: "OpenSans";
     -fx-font-size: 16px;
     -fx-font-weight: Bold;
@@ -132,7 +132,7 @@
 }
 
 .label-tabel-customer {
-    -fx-padding: 0px 0px 25px 50px;
+    -fx-padding: 0px 0px 0px 50px;
     -fx-font-family: "OpenSans";
     -fx-font-size: 16px;
     -fx-font-weight: Bold;
@@ -140,7 +140,7 @@
 }
 
 .label-tabel-staff {
-    -fx-padding: 0px 0px 25px 50px;
+    -fx-padding: 0px 0px 0px 50px;
     -fx-font-family: "OpenSans";
     -fx-font-size: 16px;
     -fx-font-weight: Bold;
@@ -148,7 +148,7 @@
 }
 
 .label-tabel-produk {
-    -fx-padding: 0px 0px 25px 50px;
+    -fx-padding: 0px 0px 0px 50px;
     -fx-font-family: "OpenSans";
     -fx-font-size: 16px;
     -fx-font-weight: Bold;
@@ -176,7 +176,7 @@
 /* Transaksi */
 .tool-box {
     -fx-background-color: transparent;
-    -fx-padding: 0px 50px 25px 50px;
+    -fx-padding: 20px 50px 20px 50px;
 }
 
 .filter-button {
@@ -196,8 +196,18 @@
     -fx-font-size: 16px;
 }
 
+.search-button {
+    -fx-padding: 5px 10px 5px 10px;
+    -fx-cursor: hand;
+    -fx-background-color: #02886F;
+    -fx-font-family: "OpenSans";
+    -fx-font-size: 16px;
+    -fx-font-weight: Bold;
+    -fx-text-fill: #FFFFFF;
+}
+
 .add-button {
-    -fx-padding: 11px 10px 11px 10px;
+    -fx-padding: 5px 10px 5px 10px;
     -fx-cursor: hand;
     -fx-background-color: #02886F;
     -fx-font-family: "OpenSans";
@@ -225,6 +235,7 @@
 .form-label {
     -fx-font-family: "OpenSans";
     -fx-font-size: 16px;
+    -fx-font-weight: Bold;
     -fx-text-fill: #333333;
 }
 
@@ -243,8 +254,12 @@
 
 .button-box {
     -fx-background-color: transparent;
+    -fx-padding: 20px;
     -fx-alignment: baseline-right;
-    -fx-padding: 25px 50px 25px 0px;
+}
+
+.button-box .button {
+    -fx-margin: 10px;
 }
 
 .edit-button {
@@ -270,3 +285,7 @@
 .combo-box-base .list-cell:empty {
     -fx-text-fill: white;
 }   
+
+.form-search {
+    -fx-background-color: transparent;
+}

@@ -188,7 +188,7 @@ public class Staff {
 
             setKodeStaff(kodeStaff);
 
-            sql = "INSERT INTO staff (kode_staff, nama_staff, jk_staff, tempat_lahir, tgl_lahir, alamat_staff, nomor_hp, email_staff, spesialisasi_staff) VALUES ('" + getKodeStaff() + "','"  + getNamaStaff() + "', '" + getJenisKelaminStaffString() + "','" + getTempatLahirStaffString() + "','" + getTanggalLahir() + "','" + getAlamatStaffString() + "','" + getNomorHpStaff() + "','" + getEmailStaff() + "','" + getSpesialisasiStaff() + "')";
+            sql = "INSERT INTO staff (kode_staff, nama_staff, jk_staff, tempat_lahir, tgl_lahir, alamat_staff, nomor_hp, email_staff, spesialisasi_staff) VALUES ('" + kodeStaff + "','"  + getNamaStaff() + "', '" + getJenisKelaminStaffString() + "','" + getTempatLahirStaffString() + "','" + getTanggalLahir() + "','" + getAlamatStaffString() + "','" + getNomorHpStaff() + "','" + getEmailStaff() + "','" + getSpesialisasiStaff() + "')";
         }
 
         return db.runSql(sql);

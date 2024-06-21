@@ -41,14 +41,22 @@ public class TableProduk {
     public TableProduk() {
         rootPane = new BorderPane();
         rootPane.getStyleClass().add("root-pane");
+
+        VBox top = new VBox();
+        top.getChildren().add(header());
+        top.getChildren().add(menu());
+        top.getChildren().add(labelTabel());
+        top.getChildren().add(tool());
+
         VBox center = new VBox();
-        center.getChildren().add(header());
-        center.getChildren().add(menu());
-        center.getChildren().add(labelTabel());
-        center.getChildren().add(tool());
         center.getChildren().add(getTable());
-        center.getChildren().add(createButtonBox());
+
+        VBox bottom = new VBox();
+        bottom.getChildren().add(createButtonBox());
+
+        rootPane.setTop(top);
         rootPane.setCenter(center);
+        rootPane.setBottom(bottom);
     }
 
     public HBox header() {

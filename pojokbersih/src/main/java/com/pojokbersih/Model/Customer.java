@@ -10,6 +10,7 @@ import javafx.beans.property.*;
 public class Customer {
     private static final String List = null;
     private final StringProperty idCustomer = new SimpleStringProperty();
+    private final StringProperty kodeCustomer = new SimpleStringProperty();
     private final StringProperty namaCustomer = new SimpleStringProperty();
     private final StringProperty nomorHpCustomer = new SimpleStringProperty();
     private final StringProperty alamatCustomer = new SimpleStringProperty();
@@ -22,9 +23,10 @@ public class Customer {
         List<String> list = ((ArrayList<String>) obj);
 
         idCustomer.set(list.get(0).toString());
-        namaCustomer.set(list.get(1).toString());
-        nomorHpCustomer.set(list.get(2).toString());
-        alamatCustomer.set(list.get(3).toString());
+        kodeCustomer.set(list.get(1).toString());
+        namaCustomer.set(list.get(2).toString());
+        nomorHpCustomer.set(list.get(3).toString());
+        alamatCustomer.set(list.get(4).toString());
     }
 
     public String getIdCustomer() {
@@ -37,6 +39,19 @@ public class Customer {
 
     public StringProperty idCustomerProperty() {
         return idCustomer;
+    }
+
+    // Getter and Setter for kodeCustomer
+    public String getKodeCustomer() {
+        return kodeCustomer.get();
+    }
+
+    public void setKodeCustomer(String kodeCustomer) {
+        this.kodeCustomer.set(kodeCustomer);
+    }
+
+    public StringProperty kodeCustomerProperty() {
+        return kodeCustomer;
     }
 
     // Getter and Setter for namaCustomer
@@ -79,9 +94,22 @@ public class Customer {
     }
     
     public Boolean create() {
-        String sql = "INSERT INTO customer (nama_customer, nomor_hp, alamat_customer) VALUES ('" + getNamaCustomer() + "', '" + getNomorHpCustomer() + "', '" + getAlamatCustomer() + "')";
         DB db = new DB();
-
+        String sql = "SELECT MAX(kode_customer) FROM customer";
+        ArrayList<Object> result = db.runQuery(sql);
+    
+        String maxKodeCustomer = null;
+        if (!result.isEmpty()) {
+            List<Object> row = (List<Object>) result.get(0);
+            maxKodeCustomer = (String) row.get(0);
+        }
+    
+        int nextId = maxKodeCustomer == null? 1 : Integer.parseInt(maxKodeCustomer.substring(2)) + 1;
+        String kodeCustomer = "CS" + String.format("%05d", nextId);
+    
+        setKodeCustomer(kodeCustomer);
+    
+        sql = "INSERT INTO customer (kode_customer, nama_customer, nomor_hp, alamat_customer) VALUES ('" + getKodeCustomer() + "', '" + getNamaCustomer() + "', '" + getNomorHpCustomer() + "', '" + getAlamatCustomer() + "')";
         return db.runSql(sql);
     }
 
