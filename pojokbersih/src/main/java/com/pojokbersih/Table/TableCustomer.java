@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import com.pojokbersih.App;
 import com.pojokbersih.DB;
-import com.pojokbersih.Home;
 import com.pojokbersih.Model.Customer;
 
 import javafx.collections.FXCollections;
@@ -75,7 +74,7 @@ public class TableCustomer {
         home.getStyleClass().add("btn");
 
         home.setOnAction(e -> {
-            Home homee = new Home();
+            TableHome homee = new TableHome();
             rootPane.getScene().setRoot(homee.getRootPane());
         });
 

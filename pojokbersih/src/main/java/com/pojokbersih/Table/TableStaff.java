@@ -10,7 +10,6 @@ import java.sql.Date;
 
 import com.pojokbersih.App;
 import com.pojokbersih.DB;
-import com.pojokbersih.Home;
 import com.pojokbersih.Model.Customer;
 import com.pojokbersih.Model.Staff;
 
@@ -84,7 +83,7 @@ public class TableStaff {
         home.getStyleClass().add("btn");
 
         home.setOnAction(e -> {
-            Home homee = new Home();
+            TableHome homee = new TableHome();
             rootPane.getScene().setRoot(homee.getRootPane());
         });
 
@@ -140,7 +139,7 @@ public class TableStaff {
         formSearch.setVgap(5);
         
         // Search Nama Staff
-        Label searchNamaStaffLabel = new Label("Nama Customer:");
+        Label searchNamaStaffLabel = new Label("Nama Staff:");
         searchNamaStaffLabel.getStyleClass().add("form-label");
         searchNamaStaffLabel.setPrefSize(200, 35);
         TextField searchNamaStaffField = new TextField();

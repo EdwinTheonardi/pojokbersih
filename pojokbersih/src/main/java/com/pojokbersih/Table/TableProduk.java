@@ -7,7 +7,6 @@ import java.util.Map;
 
 import com.pojokbersih.App;
 import com.pojokbersih.DB;
-import com.pojokbersih.Home;
 import com.pojokbersih.Model.Produk;
 import com.pojokbersih.Model.Staff;
 
@@ -78,7 +77,7 @@ public class TableProduk {
         home.getStyleClass().add("btn");
 
         home.setOnAction(e -> {
-            Home homee = new Home();
+            TableHome homee = new TableHome();
             rootPane.getScene().setRoot(homee.getRootPane());
         });
 
@@ -135,7 +134,7 @@ public class TableProduk {
         formSearch.setVgap(5);
         
         // Search Nama Produk
-        Label searchNamaProdukLabel = new Label("Nama Customer:");
+        Label searchNamaProdukLabel = new Label("Nama Produk:");
         searchNamaProdukLabel.getStyleClass().add("form-label");
         searchNamaProdukLabel.setPrefSize(200, 35);
         TextField searchNamaProdukField = new TextField();

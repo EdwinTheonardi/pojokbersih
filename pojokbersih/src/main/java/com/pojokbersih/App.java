@@ -26,6 +26,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import com.pojokbersih.Table.TableHome;
+
 /**
  * JavaFX App
  */
@@ -107,7 +109,7 @@ public class App extends Application {
             Login auth = new Login(usernameField.getText(), passwordField.getText());
 
             if (auth.authenticate()) {
-                Home home = new Home();
+                TableHome home = new TableHome();
                 window.getScene().setRoot(home.getRootPane());
             }
             else {

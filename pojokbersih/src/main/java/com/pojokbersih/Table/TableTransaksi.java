@@ -1,16 +1,34 @@
 package com.pojokbersih.Table;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.pojokbersih.App;
 import com.pojokbersih.DB;
-import com.pojokbersih.Home;
+import com.pojokbersih.Form.EditTransaksi;
+import com.pojokbersih.Form.TambahTransaksi;
+import com.pojokbersih.Model.Customer;
+import com.pojokbersih.Model.Produk;
+import com.pojokbersih.Model.Staff;
 import com.pojokbersih.Model.Transaksi;
 
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -27,21 +45,49 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.converter.LocalDateStringConverter;
 
 public class TableTransaksi {
     private final BorderPane rootPane;
+    private final List<Customer> listCustomer = new ArrayList<Customer>();
+    private final List<Staff> listPIC = new ArrayList<Staff>();
 
     public TableTransaksi() {
         rootPane = new BorderPane();
         rootPane.getStyleClass().add("root-pane");
+
+        getData();
+
+        VBox top = new VBox();
+        top.getChildren().add(header());
+        top.getChildren().add(menu());
+        top.getChildren().add(labelTabel());
+        top.getChildren().add(tool());
+
         VBox center = new VBox();
-        center.getChildren().add(header());
-        center.getChildren().add(menu());
-        center.getChildren().add(labelTabel());
-        center.getChildren().add(tool());
         center.getChildren().add(getTable());
-        center.getChildren().add(createButtonBox());
+
+        VBox bottom = new VBox();
+        bottom.getChildren().add(createButtonBox());
+
+        rootPane.setTop(top);
         rootPane.setCenter(center);
+        rootPane.setBottom(bottom);
+
+        DB db = new DB();
+        String sqlCustomer = "SELECT * FROM customer";
+        ArrayList<Object> resultCustomer = db.runQuery(sqlCustomer);
+        for (Object row : resultCustomer) {
+            Customer customer = new Customer(row);
+            listCustomer.add(customer);
+        }
+        
+        String sqlStaff = "SELECT * FROM staff";
+        ArrayList<Object> resultStaff = db.runQuery(sqlStaff);
+        for (Object row : resultStaff) {
+            Staff staff = new Staff(row);
+            listPIC.add(staff);
+        }
     }
 
     public HBox header() {
@@ -63,7 +109,7 @@ public class TableTransaksi {
         home.getStyleClass().add("btn");
 
         home.setOnAction(e -> {
-            Home homee = new Home();
+            TableHome homee = new TableHome();
             rootPane.getScene().setRoot(homee.getRootPane());
         });
 
@@ -112,234 +158,85 @@ public class TableTransaksi {
         HBox tool = new HBox(20);
         tool.getStyleClass().add("tool-box");
 
-            ComboBox<String> filter = new ComboBox<>();
-            filter.getItems().addAll("Tanggal Terbaru", "Tanggal Terlama", "Not Contacted", "Deal", "On Going", "Done");
-            filter.setPromptText("Filter");
-            filter.getStyleClass().add("filter-button");
-            
-
-            TextField searchField = new TextField();
-            searchField.getStyleClass().add("search-field");
-            searchField.setPromptText("Cari");
-            
-            Button addButton = new Button();
-            addButton.setText("Tambah");
-            addButton.getStyleClass().add("add-button");
-
-            addButton.setOnAction(event -> {
-                Stage halamanTambah = new Stage();
-                halamanTambah.initModality(Modality.APPLICATION_MODAL);
-                halamanTambah.setTitle("Tambah Transaksi");
-                halamanTambah.setWidth(1280);
-                halamanTambah.setHeight(720);
-                
-                StackPane halamanBaru = new StackPane();
-                halamanBaru.getStylesheets().add(App.class.getResource("css/style.css").toExternalForm());
-                halamanBaru.getStyleClass().add("halaman-baru");
-
-                VBox formTambah = new VBox();
-                Label formTitle = new Label("Tambah Transaksi");
-                formTitle.getStyleClass().add("form-title");
-                formTambah.getChildren().add(formTitle);
-
-                StackPane formTitleWrapper = new StackPane();
-                formTitleWrapper.getChildren().add(formTitle);
-                formTitleWrapper.setPrefWidth(200);
-                StackPane.setAlignment(formTitle, Pos.CENTER);
-                formTambah.getChildren().add(formTitleWrapper);
-
-                // row 1
-                GridPane row1 = new GridPane();
-                row1.getStyleClass().add("form-grid");
-                row1.setHgap(10);
-                row1.setVgap(5);
-                Label tanggalTransaksiLabel = new Label("Tanggal Transaksi:");
-                tanggalTransaksiLabel.getStyleClass().add("form-label");
-                tanggalTransaksiLabel.setPrefSize(200, 20);
-                DatePicker tanggalTransaksiField = new DatePicker();
-                tanggalTransaksiField.setPrefSize(200, 20);
-                GridPane.setConstraints(tanggalTransaksiLabel, 0, 0);
-                GridPane.setConstraints(tanggalTransaksiField, 1, 0);
-                row1.getChildren().addAll(tanggalTransaksiLabel, tanggalTransaksiField);
-                formTambah.getChildren().add(row1);
-
-                // row 2
-                GridPane row2 = new GridPane();
-                row2.getStyleClass().add("form-grid");
-                row2.setHgap(10);
-                row2.setVgap(5);
-                Label tanggalPengerjaanLabel = new Label("Tanggal Pengerjaan:");
-                tanggalPengerjaanLabel.getStyleClass().add("form-label");
-                tanggalPengerjaanLabel.setPrefSize(200, 20);
-                DatePicker tanggalPengerjaanField = new DatePicker();
-                tanggalPengerjaanField.setPrefSize(200, 20);
-                GridPane.setConstraints(tanggalPengerjaanLabel, 0, 0);
-                GridPane.setConstraints(tanggalPengerjaanField, 1, 0);
-                row2.getChildren().addAll(tanggalPengerjaanLabel, tanggalPengerjaanField);
-                formTambah.getChildren().add(row2);
-
-                // row 3
-                GridPane row3 = new GridPane();
-                row3.getStyleClass().add("form-grid");
-                row3.setHgap(10);
-                row3.setVgap(5);
-                Label namaCustomerLabel = new Label("Nama Customer:");
-                namaCustomerLabel.getStyleClass().add("form-label");
-                namaCustomerLabel.setPrefSize(200, 20);
-                TextField namaCustomerField = new TextField();
-                namaCustomerField.setPrefSize(140, 20);
-                namaCustomerField.setDisable(true);
-                Button insert = new Button("+");
-                insert.getStyleClass().add("form-button");
-                insert.setPrefSize(50, 20);
-                GridPane.setConstraints(namaCustomerLabel, 0, 0);
-                GridPane.setConstraints(namaCustomerField, 1, 0);
-                GridPane.setConstraints(insert, 2, 0);
-                row3.getChildren().addAll(namaCustomerLabel, namaCustomerField, insert);
-                formTambah.getChildren().add(row3);
-
-                // row 4
-                GridPane row4 = new GridPane();
-                row4.getStyleClass().add("form-grid");
-                row4.setHgap(10);
-                row4.setVgap(5);
-                Label nomorTelfonLabel = new Label("Nomor Telepon:");
-                nomorTelfonLabel.getStyleClass().add("form-label");
-                nomorTelfonLabel.setPrefSize(200, 20);
-                TextField nomorTelfonField = new TextField();
-                nomorTelfonField.setPrefSize(200, 20);
-                nomorTelfonField.setDisable(true);
-                GridPane.setConstraints(nomorTelfonLabel, 0, 0);
-                GridPane.setConstraints(nomorTelfonField, 1, 0);
-                row4.getChildren().addAll(nomorTelfonLabel, nomorTelfonField);
-                formTambah.getChildren().add(row4);
-
-                // row 5
-                GridPane row5 = new GridPane();
-                row5.getStyleClass().add("form-grid");
-                row5.setHgap(10);
-                row5.setVgap(5);
-                Label alamatCustomerLabel = new Label("Alamat Customer:");
-                alamatCustomerLabel.getStyleClass().add("form-label");
-                alamatCustomerLabel.setPrefSize(200, 20);
-                TextArea alamatCustomerField = new TextArea();
-                alamatCustomerField.setPrefSize(200, 80);
-                alamatCustomerField.setDisable(true);
-                GridPane.setConstraints(alamatCustomerLabel, 0, 0);
-                GridPane.setConstraints(alamatCustomerField, 1, 0);
-                row5.getChildren().addAll(alamatCustomerLabel, alamatCustomerField);
-                formTambah.getChildren().add(row5);
-
-                // row 6
-                GridPane row6 = new GridPane();
-                row6.getStyleClass().add("form-grid");
-                row6.setHgap(10);
-                row6.setVgap(5);
-                Label picLabel = new Label("PIC:");
-                picLabel.getStyleClass().add("form-label");
-                picLabel.setPrefSize(200, 20);
-                TextField picField = new TextField();
-                picField.setPrefSize(140, 20);
-                picField.setDisable(true);
-                Button insertPic = new Button("+");
-                insertPic.getStyleClass().add("form-button");
-                insertPic.setPrefSize(50, 20);
-                GridPane.setConstraints(picLabel, 0, 0);
-                GridPane.setConstraints(picField, 1, 0);
-                GridPane.setConstraints(insertPic, 2, 0);
-                row6.getChildren().addAll(picLabel, picField, insertPic);
-                formTambah.getChildren().add(row6);
-
-                // row 7
-                GridPane row7 = new GridPane();
-                row7.getStyleClass().add("form-grid");
-                row7.setHgap(10);
-                row7.setVgap(5);
-                Label staffLabel = new Label("Staff:");
-                staffLabel.getStyleClass().add("form-label");
-                staffLabel.setPrefSize(200, 20);
-                TextField staffField = new TextField();
-                staffField.setPrefSize(140, 20);
-                staffField.setDisable(true);
-                Button insertStaff = new Button("+");
-                insertStaff.getStyleClass().add("form-button");
-                insertStaff.setPrefSize(50, 20);
-                GridPane.setConstraints(staffLabel, 0, 0);
-                GridPane.setConstraints(staffField, 1, 0);
-                GridPane.setConstraints(insertStaff, 2, 0);
-                row7.getChildren().addAll(staffLabel, staffField, insertStaff);
-                formTambah.getChildren().add(row7);
-
-                // row 8
-                GridPane row8 = new GridPane();
-                row8.getStyleClass().add("form-grid");
-                row8.setHgap(10);
-                row8.setVgap(5);
-                Label produkLabel = new Label("Produk:");
-                produkLabel.getStyleClass().add("form-label");
-                produkLabel.setPrefSize(200, 20);
-                ComboBox<String> produkBox = new ComboBox<>();
-                produkBox.getItems().addAll("Regular Cleaning", "Deep Cleaning", "Inspection", "Gardening");
-                produkBox.setPrefSize(200, 20);
-                GridPane.setConstraints(produkLabel, 0, 0);
-                GridPane.setConstraints(produkBox, 1, 0);
-                row8.getChildren().addAll(produkLabel, produkBox);
-                formTambah.getChildren().add(row8);
-
-                // row 9
-                GridPane row9 = new GridPane();
-                row9.getStyleClass().add("form-grid");
-                row9.setHgap(10);
-                row9.setVgap(5);
-                Label biayaJasaLabel = new Label("Biaya Jasa:");
-                biayaJasaLabel.getStyleClass().add("form-label");
-                biayaJasaLabel.setPrefSize(200, 20);
-                TextField biayaJasaField = new TextField();
-                biayaJasaField.setPrefSize(200, 20);
-                GridPane.setConstraints(biayaJasaLabel, 0, 0);
-                GridPane.setConstraints(biayaJasaField, 1, 0);
-                row9.getChildren().addAll(biayaJasaLabel, biayaJasaField);
-                formTambah.getChildren().add(row9);
-
-                // row 10
-                GridPane row10 = new GridPane();
-                row10.getStyleClass().add("form-grid");
-                row10.setHgap(10);
-                row10.setVgap(5);Label statusLabel = new Label("Status:");
-                statusLabel.getStyleClass().add("form-label");
-                statusLabel.setPrefSize(200, 20);
-                ComboBox<String> statusBox = new ComboBox<>();
-                statusBox.getItems().addAll("Not Contacted", "Deal", "On Going", "Done");
-                statusBox.setPrefSize(200, 20);
-                GridPane.setConstraints(statusLabel, 0, 0);
-                GridPane.setConstraints(statusBox, 1, 0);
-                row10.getChildren().addAll(statusLabel, statusBox);
-                formTambah.getChildren().add(row10);
-
-
-                Button saveButton = new Button();
-                saveButton.setText("Simpan");
-                saveButton.getStyleClass().add("save-button");
-                saveButton.setOnAction(e -> {
-                    halamanTambah.close();
-                });
-
-                HBox buttonWrapper = new HBox();
-                buttonWrapper.getStyleClass().add("button-wrap");
-                buttonWrapper.setAlignment(Pos.CENTER);
-                buttonWrapper.getChildren().add(saveButton);
-            
-                formTambah.getChildren().add(buttonWrapper);
-
-                halamanBaru.getChildren().add(formTambah);
-
-                Scene scene = new Scene(halamanBaru);
-                halamanTambah.setScene(scene);
-                halamanTambah.show();
-            });
-
+        // Form Search
+        GridPane formSearch = new GridPane();
+        formSearch.getStyleClass().add("form-search");
+        formSearch.setHgap(20);
+        formSearch.setVgap(5);
         
-            tool.getChildren().addAll(filter, searchField, addButton);
+        // Search Nama Customer & Tanggal
+        Label searchNamaCustLabel = new Label("Nama Customer:");
+        searchNamaCustLabel.getStyleClass().add("form-label");
+        searchNamaCustLabel.setPrefSize(200, 35);
+        TextField searchNamaCustField = new TextField();
+        searchNamaCustField.setPrefSize(200, 35);
+        GridPane.setConstraints(searchNamaCustLabel, 0, 0);
+        GridPane.setConstraints(searchNamaCustField, 1, 0);
+        formSearch.getChildren().addAll(searchNamaCustLabel, searchNamaCustField);
+
+        Label searchTanggalTransaksiFromLabel = new Label("Tanggal Transaksi Awal");
+        searchTanggalTransaksiFromLabel.getStyleClass().add("form-label");
+        searchTanggalTransaksiFromLabel.setPrefSize(200, 35);
+        DatePicker searchTanggalTransaksiFromField = new DatePicker();
+        searchTanggalTransaksiFromField.setPrefSize(200,35);
+        GridPane.setConstraints(searchTanggalTransaksiFromLabel, 0, 1);
+        GridPane.setConstraints(searchTanggalTransaksiFromField, 1, 1);
+        formSearch.getChildren().addAll(searchTanggalTransaksiFromLabel, searchTanggalTransaksiFromField);
+
+        Label searchTanggalTransaksiToLabel = new Label("Tanggal Transaksi Akhir");
+        searchTanggalTransaksiToLabel.getStyleClass().add("form-label");
+        searchTanggalTransaksiToLabel.setPrefSize(200, 35);
+        DatePicker searchTanggalTransaksiToField = new DatePicker();
+        searchTanggalTransaksiToField.setPrefSize(200,35);
+        GridPane.setConstraints(searchTanggalTransaksiToLabel, 2, 1);
+        GridPane.setConstraints(searchTanggalTransaksiToField, 3, 1);
+        formSearch.getChildren().addAll(searchTanggalTransaksiToLabel, searchTanggalTransaksiToField);
+
+        Button searchButton = new Button();
+        searchButton.setText("Cari");
+        searchButton.getStyleClass().add("search-button");
+        searchButton.setOnAction(e -> {
+            String searchNamaCustQuery = searchNamaCustField.getText().toLowerCase();
+            LocalDate searchTanggalTransaksiFromQuery = searchTanggalTransaksiFromField.getValue();
+            LocalDate searchTanggalTransaksiToQuery = searchTanggalTransaksiToField.getValue();
+            FilteredList<Transaksi> filteredTransaksi = new FilteredList<>(FXCollections.observableArrayList(listTransaksi), p -> true);
+            filteredTransaksi.setPredicate(p -> {
+                Customer customer = getCustomer(p.getIdCustomer());
+                String tanggalTransaksiString = p.getTanggalTransaksi();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDate tanggalTransaksi = LocalDate.parse(tanggalTransaksiString, formatter);
+                return (searchNamaCustQuery.isEmpty() || customer.getNamaCustomer().toLowerCase().contains(searchNamaCustQuery)) &&
+               (searchTanggalTransaksiFromQuery == null || tanggalTransaksi.isEqual(searchTanggalTransaksiFromQuery) || tanggalTransaksi.isAfter(searchTanggalTransaksiFromQuery)) &&
+               (searchTanggalTransaksiToQuery == null || tanggalTransaksi.isEqual(searchTanggalTransaksiToQuery) || tanggalTransaksi.isBefore(searchTanggalTransaksiToQuery));
+        });
+
+            tb.setItems(filteredTransaksi);
+        });
+        
+        Button viewAllButton = new Button("Lihat Semua");
+        viewAllButton.getStyleClass().add("search-button");
+        viewAllButton.setOnAction(e -> {
+            tb.setItems(FXCollections.observableArrayList(new ArrayList<>(listTransaksi)));
+            searchNamaCustField.clear();
+            searchTanggalTransaksiFromField.setValue(null);
+            searchTanggalTransaksiToField.setValue(null);
+        });
+        
+        Button addButton = new Button();
+        addButton.setText("Tambah");
+        addButton.getStyleClass().add("add-button");
+
+        addButton.setOnAction(event -> {
+            TambahTransaksi formTambah = new TambahTransaksi(this);
+            formTambah.getStage().show();
+        });
+
+        HBox buttonBox = new HBox(10);
+        buttonBox.getChildren().addAll(searchButton, viewAllButton, addButton);
+        buttonBox.setAlignment(Pos.BOTTOM_RIGHT);
+        
+        tool.getChildren().add(formSearch);
+        tool.getChildren().add(buttonBox);
         return tool;
     }
 
@@ -354,37 +251,32 @@ public class TableTransaksi {
         return tabel;
     }
 
-    private List<Transaksi> listTransaksi;
+    private List<Transaksi> listTransaksi = new ArrayList<Transaksi>();
     private TableView<Transaksi> tb = new TableView<Transaksi>();
 
     @SuppressWarnings("unchecked")
     public TableView<Transaksi> createTable() {
-        TableColumn<Transaksi, String> col_idtransaksi = new TableColumn<>("Kode Transaksi");
+
+        TableColumn<Transaksi, String> col_kodetransaksi = new TableColumn<>("Kode Transaksi");
         TableColumn<Transaksi, String> col_idcustomer = new TableColumn<>("Nama Customer");
-        TableColumn<Transaksi, String> col_idstaff = new TableColumn<>("Nama Staff");
         TableColumn<Transaksi, String> col_pic = new TableColumn<>("PIC");
-        TableColumn<Transaksi, String> col_idproduk = new TableColumn<>("Produk");
         TableColumn<Transaksi, String> col_tanggaltransaksi = new TableColumn<>("Tanggal Transaksi");
         TableColumn<Transaksi, String> col_tanggalpengerjaan = new TableColumn<>("Tanggal Pengerjaan");
         TableColumn<Transaksi, String> col_biayajasa = new TableColumn<>("Biaya Jasa");
         TableColumn<Transaksi, String> col_status = new TableColumn<>("Status");
 
-        col_idtransaksi.setCellValueFactory(v -> v.getValue().idTransaksiProperty());
-        col_idcustomer.setCellValueFactory(v -> v.getValue().idCustomerProperty());
-        col_idstaff.setCellValueFactory(v -> v.getValue().idStaffProperty());
-        col_pic.setCellValueFactory(v -> v.getValue().picProperty());
-        col_idproduk.setCellValueFactory(v -> v.getValue().idProdukProperty());
+        col_kodetransaksi.setCellValueFactory(v -> v.getValue().idTransaksiProperty());
+        col_idcustomer.setCellValueFactory(v -> getCustomer(v.getValue().idCustomerProperty().getValue()).namaCustomerProperty());
+        col_pic.setCellValueFactory(v -> getStaff(v.getValue().picProperty().getValue()).namaStaffProperty());
         col_tanggaltransaksi.setCellValueFactory(v -> v.getValue().tanggalTransaksiProperty());
         col_tanggalpengerjaan.setCellValueFactory(v -> v.getValue().tanggalPengerjaanProperty());
         col_biayajasa.setCellValueFactory(v -> v.getValue().biayaJasaProperty());
         col_status.setCellValueFactory(v -> v.getValue().statusProperty());
 
         ArrayList<TableColumn<Transaksi, String>> col = new ArrayList<>();
-        col.add(col_idtransaksi);
+        col.add(col_kodetransaksi);
         col.add(col_idcustomer);
-        col.add(col_idstaff);
         col.add(col_pic);
-        col.add(col_idproduk);
         col.add(col_tanggaltransaksi);
         col.add(col_tanggalpengerjaan);
         col.add(col_biayajasa);
@@ -400,16 +292,17 @@ public class TableTransaksi {
 
     public HBox getTable() {
         HBox table = new HBox();
-        TableView<Transaksi> tb = createTable();
+        tb.getItems().clear();
+        tb.getColumns().clear();
+
+        tb = createTable();
 
         HBox.setHgrow(table, Priority.ALWAYS);
         HBox.setHgrow(tb, Priority.ALWAYS);
         VBox.setVgrow(tb, Priority.ALWAYS);
 
-        List<Transaksi> list_transaksi = getData();
-
-        for(int y = 0; y < list_transaksi.size(); y++) {
-            tb.getItems().add(list_transaksi.get(y));
+        for(int y = 0; y < listTransaksi.size(); y++) {
+            tb.getItems().add(listTransaksi.get(y));
         }
 
         table.getChildren().add(tb);
@@ -417,35 +310,89 @@ public class TableTransaksi {
         return table;
     }
 
-    public List<Transaksi> getData() {
+    public void getData() {
         DB db = new DB();
-        String query_admin = "SELECT id_transaksi, c.nama_customer, s1.nama_staff, s2.nama_staff, p.nama_produk, tgl_transaksi, tgl_pengerjaan, biaya_jasa, status FROM customer AS c INNER JOIN transaksi AS t on c.id_customer = t.id_customer INNER JOIN staff AS s1 on s1.id_staff = t.id_staff INNER JOIN staff AS s2 on s2.id_staff = t.pic INNER JOIN produk AS p on p.id_produk = t.id_produk;";
+        String query_admin = "SELECT * FROM transaksi";
 
         List<Object> rs = db.runQuery(query_admin);
-        listTransaksi = new ArrayList<Transaksi>();
+        listTransaksi.clear();
 
         for(int i = 0; i < rs.size(); i++) {
             Transaksi transaksi = new Transaksi(rs.get(i));
 
             listTransaksi.add(transaksi);
         }
-        
-        return listTransaksi;
     }
 
     public HBox createButtonBox() {
         HBox buttonBox = new HBox(10);
+        buttonBox.setPadding(new Insets(30));
         buttonBox.getStyleClass().add("button-box");
     
         Button editButton = new Button("Edit");
         editButton.getStyleClass().add("edit-button");
+
+        editButton.setOnAction(e -> {
+            Transaksi selectedTransaksi = tb.getSelectionModel().getSelectedItem();
+
+            EditTransaksi formEdit = new EditTransaksi(selectedTransaksi, this);
+            formEdit.getStage().show();
+        });
     
         Button deleteButton = new Button("Delete");
         deleteButton.getStyleClass().add("delete-button");
-    
+        deleteButton.setOnAction(e -> {
+            HBox tableHBox = getTable();
+            TableView<Transaksi> tb = (TableView<Transaksi>) tableHBox.getChildren().get(0);
+            Transaksi selectedTransaksi = tb.getSelectionModel().getSelectedItem();
+            if (selectedTransaksi != null) {
+                if (selectedTransaksi.delete()) {
+                    Alert a = new Alert(AlertType.INFORMATION);
+                    a.setContentText("Data berhasil dihapus!");
+                    a.show();
+                    TableTransaksi transaksii = new TableTransaksi();
+                    rootPane.getScene().setRoot(transaksii.getRootPane());
+                } else {
+                    Alert a = new Alert(AlertType.ERROR);
+                    a.setContentText("Data gagal dihapus!");
+                    a.show();
+                }
+            } else {
+                Alert a = new Alert(AlertType.WARNING);
+                a.setContentText("Pilih transaksi yang ingin dihapus!");
+                a.show();
+            }
+        });
         buttonBox.getChildren().addAll(editButton, deleteButton);
     
         return buttonBox;
+    }
+
+    private Customer getCustomer(String id){
+        for(Customer customer : listCustomer){
+            if(customer.getIdCustomer().equals(id)){
+                return customer;
+            }
+        }
+
+        return new Customer();
+    }
+
+    private Staff getStaff(String id){
+        for(Staff staff : listPIC){
+            if(staff.getIdStaff().equals(id)){
+                return staff;
+            }
+        }
+
+        return new Staff();
+    }
+
+    public void refreshTable(){
+        getData();
+
+        rootPane.setCenter(null);
+        rootPane.setCenter(getTable());
     }
 
     public Pane getRootPane() {

@@ -10,7 +10,7 @@ import com.pojokbersih.DB;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class Transaksi {
+public class Home {
     private static final String List = null;
     private final StringProperty idTransaksi = new SimpleStringProperty();
     private final StringProperty idCustomer = new SimpleStringProperty();
@@ -20,11 +20,12 @@ public class Transaksi {
     private final StringProperty biayaJasa = new SimpleStringProperty();
     private final StringProperty status = new SimpleStringProperty();
 
-    public Transaksi() {
+
+    public Home () {
 
     }
 
-    public Transaksi(Object obj) {
+    public Home(Object obj) {
         List<String> list = ((ArrayList<String>) obj);
 
         idTransaksi.set(list.get(0).toString());
@@ -35,7 +36,7 @@ public class Transaksi {
         biayaJasa.set(list.get(5).toString());
         status.set(list.get(6).toString());
     }
-
+    
     public StringProperty idTransaksiProperty() {
         return idTransaksi;
     }
@@ -124,32 +125,4 @@ public class Transaksi {
         this.status.set(status);
     }
 
-    public Boolean create() {
-        DB db = new DB();
-
-        String data[] = new String[]{getIdTransaksi(), getIdCustomer(), getPic(), getTanggalTransaksi(), getTanggalPengerjaan(), getBiayaJasa(), getStatus()};
-        String queryVal = String.join("','", data);
-
-        String sql = "INSERT INTO transaksi (id_transaksi, id_customer, pic, tgl_transaksi, tgl_pengerjaan, biaya_jasa, status) VALUES ('" + queryVal + "')";
-
-        System.out.println(sql);
-
-        return db.runSql(sql);
-    }
-
-    public Boolean update() {
-        String sql = "UPDATE transaksi SET id_customer = '" + getIdCustomer() + "', pic = '" + getPic() + "', tgl_transaksi = '" + getTanggalTransaksi() + "', tgl_pengerjaan = '" + getTanggalPengerjaan() + "', biaya_jasa = '" + getBiayaJasa() + "', status = '" + getStatus() + "' WHERE id_transaksi = " + getIdTransaksi();
-        DB db = new DB();
-    
-        return db.runSql(sql);
-    }
-
-    public Boolean delete() {
-        DB db = new DB();
-        String sql = "DELETE FROM transaksi WHERE id_transaksi = '" + getIdTransaksi() + "'";
-        // String sql_detail = "DELETE FROM detailtransaksi WHERE id_transaksi = '" + getIdTransaksi() + "'";
-
-        // db.runSql(sql_detail);
-        return db.runSql(sql);
-    }
 }
