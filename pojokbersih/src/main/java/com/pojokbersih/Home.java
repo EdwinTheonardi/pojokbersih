@@ -185,7 +185,7 @@ public class Home {
         HBox tabel = new HBox();
         tabel.getStyleClass().add("tabel");
 
-        Label labelTabel = new Label("Jadwal Layanan");
+        Label labelTabel = new Label("Transaksi Terbaru");
         labelTabel.getStyleClass().add("label-tabel");
         tabel.getChildren().add(labelTabel);
 

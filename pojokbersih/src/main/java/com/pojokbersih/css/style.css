@@ -239,3 +239,43 @@
 .button-wrap {
     -fx-padding: 50px 0px 0px 0px;
 }
+
+.button-box {
+    -fx-background-color: transparent;
+    -fx-padding: 20px;
+    -fx-alignment: baseline-right;
+}
+
+.button-box .button {
+    -fx-margin: 10px;
+}
+
+.edit-button {
+    -fx-padding: 5px 10px 5px 10px;
+    -fx-cursor: hand;
+    -fx-background-color: #02886F;
+    -fx-font-family: "OpenSans";
+    -fx-font-size: 16px;
+    -fx-font-weight: Bold;
+    -fx-text-fill: #FFFFFF;
+}
+
+.delete-button {
+    -fx-padding: 5px 10px 5px 10px;
+    -fx-cursor: hand;
+    -fx-background-color: #FF0000;
+    -fx-font-family: "OpenSans";
+    -fx-font-size: 16px;
+    -fx-font-weight: Bold;
+    -fx-text-fill:#FFFFFF;
+}
+
+.search-button {
+    -fx-padding: 5px 10px 5px 10px;
+    -fx-cursor: hand;
+    -fx-background-color: #02886F;
+    -fx-font-family: "OpenSans";
+    -fx-font-size: 16px;
+    -fx-font-weight: Bold;
+    -fx-text-fill:#FFFFFF;
+}

@@ -73,5 +73,28 @@ public class DB {
             return false;
         }
     }
+
+    public String getLatestID(String sql){
+        try{
+            Class.forName(JDBC_DRIVER);
+            con = DriverManager.getConnection(DB_URL, USER, PASS);
+
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(sql);
+
+            rs.next();
+            String res = rs.getString(1);
+
+            stmt.close();
+            con.close();
+
+            return res;
+        }
+        catch(Exception e){
+            e.printStackTrace();
+
+            return "false";
+        }
+    }
     
 }
